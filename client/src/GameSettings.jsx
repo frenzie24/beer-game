@@ -27,7 +27,7 @@ const GameSettings = ({ }) => {
 
     try {
      // const response = await Connection.newGame(data);
-      const response = await fetch('http://localhost:3001/api/games/', {
+      const response = await fetch('http://localhost:5432/api/games/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 const Logout = async () => {
     try {
-        const response = await fetch('http://localhost:3001/api/users/logout', {
+        const response = await fetch('http://localhost:5432/api/users/logout', {
             credentials: 'include',
             method: 'POST',
             headers: {
