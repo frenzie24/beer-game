@@ -36,6 +36,7 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
         return max;
     }
 
+
     // handles submit and bubbles up phase1-3 data
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -96,7 +97,9 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
                 {/* need to add visibility bool to behavior container*/}
                 <BehaviorInputContainer phase={phase1} name='phase1' setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
 
-
+                <BehaviorInputContainer phase={phase2} name='phase2' setPhase={setPhase2} label="Phase 2" rounds={phase2MaxRounds} />
+                <BehaviorInputContainer phase={phase3} name='phase3' setPhase={setPhase3} label="Phase 3" rounds={phase3MaxRounds} />
+                {/*
                 <label className='bg-slate-700'> Phase 2
                     {isPhase2Disabled ? <></> :
                         <BehaviorInputContainer
@@ -120,6 +123,8 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
 
                         />}
                 </label>
+                */
+                }
                 <div className="flex flex-row flex-wrap justify-center [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700">
                     <input type="submit" onClick={handleSubmit} value="OK"></input>
                     <input type="reset" value="Reset" onClick={handleReset}></input>
