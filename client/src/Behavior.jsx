@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import BehaviorInput from './components/BehaviorInput';
-import Phase from './components/Phase';
+import BehaviorContainer from './components/BehaviorContainer';
 
 const emptyPhase = { rounds: 0, orders: 0 };
 
 const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
+    //is this needed?
     const [maxRounds, setMaxRounds] = useState(rounds ? typeof rounds === 'number' ? rounds : 10 : 10)
-
+    //phase objs, max 3 phases of behavior
     const [phase1, setPhase1] = useState({ rounds: 0, orders: 0 });
     const [phase2, setPhase2] = useState({ rounds: 0, orders: 0 });
     const [phase3, setPhase3] = useState({ rounds: 0, orders: 0 });
 
+    //this was the beginning of exploring hiding behavior input until custom behavior element is clicked
     const [isPhase1Disabled, setIsPhase1Disabled] = useState(isClicked ? isClicked : true);
+
     const [isPhase2Disabled, setIsPhase2Disabled] = useState(true);
     const [isPhase3Disabled, setIsPhase3Disabled] = useState(true);
 
@@ -67,7 +70,7 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
 
             {/*isPhase1Disabled ? <></> :*/}
             <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
-                <Phase phase={phase1} setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
+                <BehaviorContainer phase={phase1} setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
 
 
                 <label className='bg-slate-700'> Phase 2
