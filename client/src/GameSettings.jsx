@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorModal from './components/ErrorModal';
 import Connection from './workers/Conncetion';
 import Behavior from './Behavior';
+import BehaviorsList from './BehaviorsList';
 
 const GameSettings = ({ }) => {
   // State for the game settings
@@ -164,10 +165,11 @@ const GameSettings = ({ }) => {
 
 
       </form>
+      <BehaviorsList id="1" name="Wholesalers" handleSelection={()=>{return true;}} />
       {/* behavior settings
       TODO: container component to wrap <li> and handle click to expand
       list container component
-      */}
+
       {role == 0 ? <></> : <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
         <ol id='retailerBehavior'>
           <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
@@ -228,6 +230,7 @@ const GameSettings = ({ }) => {
           </ol>
         </label>
       }
+         */}
       <div className="flex justify-center">
         <button
           onClick={handleStartGame}
