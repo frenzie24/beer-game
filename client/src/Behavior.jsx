@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import BehaviorInput from './components/BehaviorInput';
+import Phase from './components/Phase';
 
 const emptyPhase = { rounds: 0, orders: 0 };
 
-const Behavior = ({ rounds, onSubmit, onCancel }) => {
+const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
     const [maxRounds, setMaxRounds] = useState(rounds ? typeof rounds === 'number' ? rounds : 10 : 10)
 
     const [phase1, setPhase1] = useState({ rounds: 0, orders: 0 });
     const [phase2, setPhase2] = useState({ rounds: 0, orders: 0 });
     const [phase3, setPhase3] = useState({ rounds: 0, orders: 0 });
 
+    const [isPhase1Disabled, setIsPhase1Disabled] = useState(isClicked ? isClicked : true);
     const [isPhase2Disabled, setIsPhase2Disabled] = useState(true);
     const [isPhase3Disabled, setIsPhase3Disabled] = useState(true);
 
@@ -63,19 +65,10 @@ const Behavior = ({ rounds, onSubmit, onCancel }) => {
     return (
         <div className="flex flex-row flex-wrap justify-center items-center rounded-md text-slate-100 text-left w-full">
 
-
+            {/*isPhase1Disabled ? <></> :*/}
             <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
+                <Phase phase={phase1} setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
 
-                <label className=' bg-slate-700'>Phase 1
-                    <BehaviorInput
-                        phase={phase1}
-                        name={phase1}
-                        orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
-                        rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { maxRounds } }}
-                        phaseUpdate={setPhase1}
-
-                    />
-                </label>
 
                 <label className='bg-slate-700'> Phase 2
                     {isPhase2Disabled ? <></> :
@@ -103,10 +96,11 @@ const Behavior = ({ rounds, onSubmit, onCancel }) => {
                 <div className="flex flex-row flex-wrap justify-center [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700">
                     <input type="submit" onClick={handleSubmit} value="OK"></input>
                     <input type="reset" value="Reset" onClick={handleReset}></input>
-                   {onCancel ? <input type="reset" value="Cancel" onClick={handleCancel}></input> :<></> }
+                    {onCancel ? <input type="reset" value="Cancel" onClick={handleCancel}></input> : <></>}
                 </div>
             </form>
 
+            {/*}*/}
         </div>
     );
 };

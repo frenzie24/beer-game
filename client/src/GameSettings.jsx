@@ -95,6 +95,13 @@ const GameSettings = ({ }) => {
 
   const handleBehaviorClick = (e) => {
     e.preventDefault();
+
+    const listItemKey = e.target.key;
+    const childBehaviorEle = e.target.children[0];
+    switch (listItemKey) {
+      case "4":
+          childBehaviorEle
+    }
     debugger;
   }
 
@@ -177,10 +184,10 @@ const GameSettings = ({ }) => {
           <ol id='retailerBehavior'>
             <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
             <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
-            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
+            <li key="3" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={()=>{return  } }>
               Custom Behavior
 
-              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} isClicked={false}/>
 
             </li>
 
@@ -194,9 +201,9 @@ const GameSettings = ({ }) => {
             <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
             <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
               Custom Behavior
-
-              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
-
+              <div hidden>
+                <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+              </div>
             </li>
 
           </ol>
