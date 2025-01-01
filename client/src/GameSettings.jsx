@@ -100,7 +100,7 @@ const GameSettings = ({ }) => {
     const childBehaviorEle = e.target.children[0];
     switch (listItemKey) {
       case "4":
-          childBehaviorEle
+        childBehaviorEle
     }
     debugger;
   }
@@ -164,8 +164,11 @@ const GameSettings = ({ }) => {
 
 
       </form>
-      {/* behavior settings */}
-      {role== 0 ? <></> : <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
+      {/* behavior settings
+      TODO: container component to wrap <li> and handle click to expand
+      list container component
+      */}
+      {role == 0 ? <></> : <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
         <ol id='retailerBehavior'>
           <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
           <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
@@ -184,10 +187,10 @@ const GameSettings = ({ }) => {
           <ol id='retailerBehavior'>
             <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
             <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
-            <li key="3" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={()=>{return  } }>
+            <li key="3" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={() => { return }}>
               Custom Behavior
 
-              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} isClicked={false}/>
+              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} isClicked={false} />
 
             </li>
 

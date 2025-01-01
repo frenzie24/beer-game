@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import BehaviorInput from './components/BehaviorInput';
 import BehaviorInputContainer from './components/BehaviorInputContainer';
 
 // empty phase data for reset ease
@@ -24,6 +23,8 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
     const [isPhase2Disabled, setIsPhase2Disabled] = useState(true);
     const [isPhase3Disabled, setIsPhase3Disabled] = useState(true);
 
+
+    //NOT SURE WE CARE IF WE KNOW ABOUT MAX # OF ROUNDS
     //gets max rounds for phase2
     const phase2MaxRounds = () => {
         const max = (maxRounds - phase1.rounds) ? phase1.rounds : 0;
