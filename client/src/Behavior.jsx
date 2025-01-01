@@ -94,14 +94,14 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
             {/*isPhase1Disabled ? <></> :*/}
             <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
                 {/* need to add visibility bool to behavior container*/}
-                <BehaviorInputContainer phase={phase1} setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
+                <BehaviorInputContainer phase={phase1} name='phase1' setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
 
 
                 <label className='bg-slate-700'> Phase 2
                     {isPhase2Disabled ? <></> :
                         <BehaviorInputContainer
                             phase={phase2}
-                            name={phase2}
+                            name='phase2'
                             orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
                             rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase2MaxRounds } }}
                             phaseUpdate={setPhase2}
@@ -113,7 +113,7 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
                     {isPhase3Disabled ? <></> :
                         <BehaviorInput
                             phase={phase3}
-                            name={phase3}
+                            name='phase3'
                             orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
                             rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase3MaxRounds } }}
                             phaseUpdate={setPhase3}

@@ -4,6 +4,7 @@ import NumberSelection from './NumberSelection';
 //component to organize inputs for a behavior component
 const BehaviorInput = ({ phase, name, orders, rounds, phaseUpdate, disabled }) => {
     const [newPhase, setNewPhase] = useState(phase);
+    if(phaseUpdate === undefined) debugger;
 
     // When rounds value changes, update newPhase with new rounds value
     const handleRoundsChange = (e) => {
