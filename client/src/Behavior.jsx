@@ -103,7 +103,7 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
                     : <></>
                 }
                 {/* controls if the phase is visible */}
-                {!isPhase2Disabled ?
+                {!isPhase3Disabled ?
                     <BehaviorInputContainer phase={phase3} name='phase3' setPhase={setPhase3} label="Phase 3" rounds={phase3MaxRounds} />
                     : <></>
                 }
