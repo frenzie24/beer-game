@@ -98,12 +98,12 @@ const GameSettings = ({ }) => {
   }
 
   return (
-    <div className="game-settings-container p-6 bg-gray-100 rounded-md shadow-md">
+    <div className="game-settings-container p-6 bg-slate-200 rounded-md shadow-md">
       <ErrorModal
         errorMessage={errorMessage}
         onClose={() => setErrorMessage('')}
       />
-      <h2 className="text-2xl font-bold mb-4">New Game Settings</h2>
+      <h2 className="text-4xl font-extrabold mb-4 text-slate-800 text-center">New Game Settings</h2>
 
       <form >
         {/* Rounds Input */}
@@ -115,7 +115,7 @@ const GameSettings = ({ }) => {
             value={rounds}
             onChange={handleOnRoundsChange}
             min="1"
-            className="mt-1 px-3 py-2 border rounded-md w-full"
+            className="mt-1 px-3 py-2 border rounded-md w-full bg-slate-900"
           />
         </div>
 
@@ -126,7 +126,7 @@ const GameSettings = ({ }) => {
             id="role"
             value={role}
             onChange={handleSelectRole}
-            className="mt-1 px-3 py-2 border rounded-md w-full"
+            className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
             disabled={false}
           >
             <option value={0}>Retailer</option>
@@ -143,25 +143,32 @@ const GameSettings = ({ }) => {
             id="entropy"
             value={entropy}
             onChange={handleSelectEntropy}
-            className="mt-1 px-3 py-2 border rounded-md w-full"
+            className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
           >
             {[...Array(10).keys()].map((i) => (
               <option key={i + 1} value={i + 1}>{i + 1}</option>
             ))}
           </select>
         </div>
-        <ol>
-          <li key="1" className="w-full">
-            <label htmlFor='retailerBehavior' className='text-slate-900'>Retailer Behavior
-            <Behavior id='retailerBehavior' rounds={rounds} onSubmit={handleBehaviorSubmit} />
-            </label>
-          </li>
-        </ol>
+        {/* behavior settings */}
+        <label htmlFor='retailerBehavior' className='text-slate-900 text-lg font-bold'>Retailer Behavior
+          <ol>
+            <li key='1'  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2">Default Behavior</li>
+            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">Random Behavior</li>
+            <li key="4"  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">
+              Custom Behavior
+
+              <Behavior id='retailerBehavior' rounds={rounds} onSubmit={handleBehaviorSubmit} />
+
+            </li>
+
+          </ol>
+        </label>
         {/* Submit Button */}
-        <div className="flex justify-end">
+        <div className="flex justify-center">
           <button
             onClick={handleStartGame}
-            className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+            className=" [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700"
           >
             Start Game
           </button>

@@ -61,7 +61,7 @@ const Behavior = ({ rounds, onSubmit, onCancel }) => {
     }, [phase1, phase2, phase3])
 
     return (
-        <div className="flex flex-row flex-wrap justify-center items-center p-4 w-full">
+        <div className="flex flex-row flex-wrap justify-center items-center rounded-md text-slate-100 text-left w-full">
 
 
             <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
