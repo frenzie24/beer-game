@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-
+/*
+########
+OUT OF DATE WITH NUMBER SELECTION BEHAVIOR
+TODO: UPDATE TO REFLECT CHANGES IN NUMBERSELECTION
+*/
 const NumberRange = ({labelText, min, max, val, setVal}) => {
     const handlehCange = (e) => {
         setVal(e.target.value);

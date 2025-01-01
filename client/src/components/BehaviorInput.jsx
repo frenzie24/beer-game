@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from 'react';
-//import NumberRange from './NumberRange';
 import NumberSelection from './NumberSelection';
 
 //component to organize inputs for a behavior component
 const BehaviorInput = ({ phase, name, orders, rounds, phaseUpdate, disabled }) => {
     const [newPhase, setNewPhase] = useState(phase);
 
+    // When rounds value changes, update newPhase with new rounds value
     const handleRoundsChange = (e) => {
         const newVal = parseInt(e);
         setNewPhase({ ...newPhase, rounds: typeof newVal === 'number' ? newVal : parseInt(e.target?.value) });
     }
 
+    // When orders value changes, update newPhase with new orders value
     const handleOrdersChange = (e) => {
         const newVal = parseInt(e);
         setNewPhase({ ...newPhase, orders: typeof newVal === 'number' ? newVal : parseInt(e.target?.value) });
     }
 
-    //bubble up with newPhase
+    //bubble up with newPhase data when newPhase updates
     useEffect(() => {
         if (newPhase != phase) {
             phaseUpdate(newPhase)
         }
     }, [newPhase]);
 
+    // numberselection components to handle order and round selections
     return (
         <div className='py-1 bg-slate-100'>
+
             <NumberSelection
                 name={name}
                 label={rounds.label}

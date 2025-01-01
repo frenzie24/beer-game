@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BehaviorInput from './components/BehaviorInput';
-import BehaviorInputContainer from './components/BehaviorContainer';
+import BehaviorInputContainer from './components/BehaviorInputContainer';
 
 // empty phase data for reset ease
 const emptyPhase = {

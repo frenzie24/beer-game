@@ -5,6 +5,8 @@ import BehaviorInput from './BehaviorInput';
 //behavior input container component
 const BehaviorInputContainer = ({phase, setPhase, label, rounds}) => {
 
+
+    //TODO: LOGIC TO HANDLE VISIBILITY HERE?
     return (
         <label className=' bg-slate-700'>{label}
             <BehaviorInput
