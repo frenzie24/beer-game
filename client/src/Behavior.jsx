@@ -1,97 +1,106 @@
 import React, { useState, useEffect } from 'react';
 import BehaviorInput from './components/BehaviorInput';
+import Phase from './components/Phase';
 
-const Behavior = ({ rounds }) => {
+const emptyPhase = { rounds: 0, orders: 0 };
+
+const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
     const [maxRounds, setMaxRounds] = useState(rounds ? typeof rounds === 'number' ? rounds : 10 : 10)
 
-    const [phase1, setPhase1] = useState({ rounds: maxRounds ? maxRounds : 0, orders: 0 });
+    const [phase1, setPhase1] = useState({ rounds: 0, orders: 0 });
     const [phase2, setPhase2] = useState({ rounds: 0, orders: 0 });
     const [phase3, setPhase3] = useState({ rounds: 0, orders: 0 });
 
-    const handlePhase1Change = (e) => {
-        setPhase1({ ...phase1, rounds: parseInt(e.target.value) });
+    const [isPhase1Disabled, setIsPhase1Disabled] = useState(isClicked ? isClicked : true);
+    const [isPhase2Disabled, setIsPhase2Disabled] = useState(true);
+    const [isPhase3Disabled, setIsPhase3Disabled] = useState(true);
 
-    };
-
-    const handlePhase2Change = (e) => {
-        setPhase2({ ...phase2, rounds: parseInt(e.target.value) });
-    };
-
-    const handlePhase3Change = (e) => {
-        setPhase3({ ...phase3, rounds: parseInt(e.target.value) });
-    };
-
-    const handleOrderChange = (newVal) => {
-        setPhase1({ ...phase1, orders: newVal })
+    const phase2MaxRounds = () => {
+        const max = (maxRounds - phase1.rounds) ? phase1.rounds : 0;
+        return max;
+    }
+    const phase3MaxRounds = () => {
+        const max = (maxRounds - phase1.rounds - phase2.rounds) ? phase1.rounds : 0;
+        return max;
     }
 
-    const isPhase2Disabled = phase1.rounds >= rounds;
-    const isPhase3Disabled = phase1.rounds === phase2.rounds && phase2.rounds >= rounds;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        try {
+            onSubmit({ phase1, phase2, phase3 });
+        } catch (err) {
+            debugger;
+        }
+    }
+
+    const handleReset = (e) => {
+        e.preventDefault();
+        setPhase1(emptyPhase);
+        setPhase2(emptyPhase);
+        setPhase3(emptyPhase);
+        setIsPhase2Disabled(true);
+        setIsPhase3Disabled(true);
+        debugger;
+    }
+
+    const handleCancel = (e) => {
+        e.preventDefault();
+        console.log('cancel called on behavior view.\nCall onCancel if passed.\nNav to previous view if not passed');
+
+    }
+
+    useEffect(() => {
+        if (phase1.rounds > 0 && phase1.rounds < maxRounds) {
+            setIsPhase2Disabled(false);
+        }
+
+        if (phase2.rounds > 0 && phase2.rounds < maxRounds) {
+            setIsPhase3Disabled(false);
+        }
+
+        console.log('phase update');
+
+    }, [phase1, phase2, phase3])
 
     return (
-        <div className="flex flex-row flex-wrap justify-center items-center p-4 w-screen">
-            <h2 className='w-full text-center'>MAX ROUNDS: {maxRounds}</h2>
+        <div className="flex flex-row flex-wrap justify-center items-center rounded-md text-slate-100 text-left w-full">
 
-            <form className='[&_*]:text-right w-54' >
-                <div className="w-full">
-                    <label>
-                        Phase 1 Rounds:
-                        <input
-                            type="number"
-                            value={phase1.rounds}
-                            onChange={handlePhase1Change}
-                            min="0"
-                            max={maxRounds}
+            {/*isPhase1Disabled ? <></> :*/}
+            <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
+                <Phase phase={phase1} setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
+
+
+                <label className='bg-slate-700'> Phase 2
+                    {isPhase2Disabled ? <></> :
+                        <BehaviorInput
+                            phase={phase2}
+                            name={phase2}
+                            orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
+                            rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase2MaxRounds } }}
+                            phaseUpdate={setPhase2}
+
                         />
-                    </label></div>
-                <div className="w-full">
-                    <label>
-                        Phase 2 Rounds:
-                        <input
-                            type="number"
-                            value={phase2.rounds}
-                            onChange={handlePhase2Change}
-                            min={phase1.rounds}
-                            max={maxRounds - phase1.rounds}
-                            disabled={isPhase2Disabled}
-                        />
-                    </label></div>
+                    }
+                </label>
+                <label className='bg-slate-700'> Phase 3
+                    {isPhase3Disabled ? <></> :
+                        <BehaviorInput
+                            phase={phase3}
+                            name={phase3}
+                            orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
+                            rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase3MaxRounds } }}
+                            phaseUpdate={setPhase3}
 
-                <BehaviorInput
-                    phase={phase1}
-                    orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
-                    rounds={{ label: "Number of Rounds to Order", min: "0", max: { maxRounds } }}
-                    phaseUpdate={setPhase1}
-                />
-                {/*
-                <NumberRange labelText="Phase 1 Rounds: " min="0" max={maxRounds}/>
-                <NumberSelection labelText={"phase 1 orders"} min='0' max="50" val={phase1.orders} setVal={handleOrderChange}/>
-
-                */}
-                <div>
-                    phase 1 orders  <input
-                        type="number"
-                        value={phase1.orders}
-                        onChange={handleOrderChange}
-                        min="0"
-                        max="100"
-                    />
+                        />}
+                </label>
+                <div className="flex flex-row flex-wrap justify-center [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700">
+                    <input type="submit" onClick={handleSubmit} value="OK"></input>
+                    <input type="reset" value="Reset" onClick={handleReset}></input>
+                    {onCancel ? <input type="reset" value="Cancel" onClick={handleCancel}></input> : <></>}
                 </div>
-
-                <div className="w-full">
-                    <label>
-                        Phase 3 Rounds:
-                        <input
-                            type="number"
-                            value={phase3.rounds}
-                            onChange={handlePhase3Change}
-                            min={phase2.rounds}
-                            max={maxRounds - phase1.rounds - phase2.rounds}
-                            disabled={isPhase3Disabled}
-                        />
-                    </label></div>
             </form>
 
+            {/*}*/}
         </div>
     );
 };

@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorModal from './components/ErrorModal';
-import Connection from './workers/Conncetion'
+import Connection from './workers/Conncetion';
+import Behavior from './Behavior';
 
 const GameSettings = ({ }) => {
   // State for the game settings
   const [rounds, setRounds] = useState(10); // Default to 10 rounds
   const [role, setRole] = useState(0); // Default role
-  const [entropy, setEntropy] = useState(5); // Default entropy level (1 to 10)
+  const [entropy, setEntropy] = useState(2); // Default entropy level (1 to 10)
   const location = useLocation();
   const [user, setUser] = useState(location.state?.user || null)
   const navigate = useNavigate(); // Use useNavigate for React Router navigation
   const [roles, setRoles] = useState([
-    { role_id: 0, name: "Retailer", user_id: user.id, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
-    { role_id: 1, name: "Wholesaler", user_id: user.id, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
-    { role_id: 2, name: "Distributor", user_id: user.id, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
-    { role_id: 3, name: "Manufacturer", user_id: user.id, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 0, name: "Retailers", user_id: user?.id ? user.id : 1, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 1, name: "Wholesaler", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 2, name: "Distributor", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 3, name: "Manufacturer", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
   ]);
 
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleBehaviorSubmit = ({ phases }) => {
+    debugger;
+    console.log(phases)
+  }
 
   // Handle form submission to start the game
   const handleStartGame = async (e) => {
@@ -26,18 +32,18 @@ const GameSettings = ({ }) => {
     e.preventDefault();
 
     try {
-     // const response = await Connection.newGame(data);
-      const response = await fetch('http://localhost:5432/api/games/', {
+      // const response = await Connection.newGame(data);
+      const response = await fetch('http://localhost:3001/api/games/', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         credentials: 'include',
         body: JSON.stringify(data),
-    });
+      });
 
-    debugger;
-    if (response.ok) {
+      debugger;
+      if (response.ok) {
         debugger;
         const data = await response.json();
         console.log('GAME CREATED:', data);
@@ -47,7 +53,7 @@ const GameSettings = ({ }) => {
         //
 
         // Redirect to profile page after successful login
-    }
+      }
       debugger;
       if (response) {
         debugger;
@@ -86,18 +92,26 @@ const GameSettings = ({ }) => {
     setRounds(val);
   }
 
-  const handleSelectEntropy = (e) => {
-    const val = e.target.value;
-    setEntropy(val);
+
+  const handleBehaviorClick = (e) => {
+    e.preventDefault();
+
+    const listItemKey = e.target.key;
+    const childBehaviorEle = e.target.children[0];
+    switch (listItemKey) {
+      case "4":
+          childBehaviorEle
+    }
+    debugger;
   }
 
   return (
-    <div className="game-settings-container p-6 bg-gray-100 rounded-md shadow-md">
+    <div className="game-settings-container p-6 bg-slate-200 rounded-md shadow-md">
       <ErrorModal
         errorMessage={errorMessage}
         onClose={() => setErrorMessage('')}
       />
-      <h2 className="text-2xl font-bold mb-4">New Game Settings</h2>
+      <h2 className="text-4xl font-extrabold mb-4 text-slate-800 text-center">Game Settings</h2>
 
       <form >
         {/* Rounds Input */}
@@ -109,7 +123,7 @@ const GameSettings = ({ }) => {
             value={rounds}
             onChange={handleOnRoundsChange}
             min="1"
-            className="mt-1 px-3 py-2 border rounded-md w-full"
+            className="mt-1 px-3 py-2 border rounded-md w-full bg-slate-900"
           />
         </div>
 
@@ -120,41 +134,105 @@ const GameSettings = ({ }) => {
             id="role"
             value={role}
             onChange={handleSelectRole}
-            className="mt-1 px-3 py-2 border rounded-md w-full"
+            className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
             disabled={false}
           >
-            <option value={0}>Retailer</option>
-            <option value={1}>Wholesaler</option>
-            <option value="2">Distributor</option>
-            <option value="3">Manufacturer</option>
+            <option value={0}>Retailers</option>
+            <option value={1}>Wholesalers</option>
+            <option value="2">Distributors</option>
+            <option value="3">Manufacturers</option>
           </select>
         </div>
 
-        {/* Random Entropy Level Dropdown */}
+        {/* Random Entropy Level Dropdown
         <div className="mb-4">
           <label htmlFor="entropy" className="block text-sm text-black font-semibold">Random Entropy Level (1-10):</label>
           <select
             id="entropy"
             value={entropy}
             onChange={handleSelectEntropy}
-            className="mt-1 px-3 py-2 border rounded-md w-full"
+            className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
           >
             {[...Array(10).keys()].map((i) => (
               <option key={i + 1} value={i + 1}>{i + 1}</option>
             ))}
           </select>
         </div>
+        */}
 
         {/* Submit Button */}
-        <div className="flex justify-end">
-          <button
-            onClick={handleStartGame}
-            className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
-          >
-            Start Game
-          </button>
-        </div>
+
+
       </form>
+      {/* behavior settings */}
+      {role === 0 ? <></> : <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
+        <ol id='retailerBehavior'>
+          <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+          <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+          <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
+            Custom Behavior
+
+            <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+
+          </li>
+
+        </ol>
+      </label>
+      }
+      {role === 1 ? <></> :
+        <label className='text-slate-900 text-lg font-bold'>Wholesalers Behavior
+          <ol id='retailerBehavior'>
+            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+            <li key="3" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={()=>{return  } }>
+              Custom Behavior
+
+              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} isClicked={false}/>
+
+            </li>
+
+          </ol>
+        </label>
+      }
+      {role === 2 ? <></> :
+        <label className='text-slate-900 text-lg font-bold'>Distributers Behavior
+          <ol id='retailerBehavior'>
+            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
+              Custom Behavior
+              <div hidden>
+                <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+              </div>
+            </li>
+
+          </ol>
+        </label>
+      }
+
+      {role === 3 ? <></> :
+        <label className='text-slate-900 text-lg font-bold'>Manufacturers Behavior
+          <ol id='retailerBehavior'>
+            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
+              Custom Behavior
+
+              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+
+            </li>
+
+          </ol>
+        </label>
+      }
+      <div className="flex justify-center">
+        <button
+          onClick={handleStartGame}
+          className=" [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700"
+        >
+          Start Game
+        </button>
+      </div>
     </div>
   );
 };
