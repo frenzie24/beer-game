@@ -15,14 +15,20 @@ Game.init(
             type: DataTypes.INTEGER,
             allowNull: true,
         },
+        orderDelay: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+            allowNull: false,
+        },
+        manufacturerDelay: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+            allowNull: false
+        },
         date: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
-        },/*
-        current_player_turn: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },*/
+        },
         selectedRole: {
             type: DataTypes.INTEGER,
             allowNull: true,
@@ -31,10 +37,7 @@ Game.init(
             type: DataTypes.INTEGER,
             allowNull: true,
         },
-        entropy: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
+
         last_date_updated: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
