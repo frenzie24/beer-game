@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+//label and number selection component, val and setVal must be passed
 const NumberSelection = ({ name, label, min, max, val, setVal, disabled }) => {
-
 
     const handleChange = (e) => {
         setVal(e.target.value);

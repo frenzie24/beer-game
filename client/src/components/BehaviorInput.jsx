@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 //import NumberRange from './NumberRange';
-import NumberSelection from '../NumberSelection';
+import NumberSelection from './NumberSelection';
 
-
+//component to organize inputs for a behavior component
 const BehaviorInput = ({ phase, name, orders, rounds, phaseUpdate, disabled }) => {
     const [newPhase, setNewPhase] = useState(phase);
 
@@ -16,6 +16,7 @@ const BehaviorInput = ({ phase, name, orders, rounds, phaseUpdate, disabled }) =
         setNewPhase({ ...newPhase, orders: typeof newVal === 'number' ? newVal : parseInt(e.target?.value) });
     }
 
+    //bubble up with newPhase
     useEffect(() => {
         if (newPhase != phase) {
             phaseUpdate(newPhase)

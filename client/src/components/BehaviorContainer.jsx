@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BehaviorInput from './BehaviorInput';
 
-const Phase = ({phase, setPhase, label, rounds}) => {
-
+//behavior input container component
+const BehaviorContainer = ({phase, setPhase, label, rounds}) => {
 
     return (
         <label className=' bg-slate-700'>{label}
@@ -19,4 +19,4 @@ const Phase = ({phase, setPhase, label, rounds}) => {
     );
 }
 
-export default Phase;
+export default BehaviorContainer;
