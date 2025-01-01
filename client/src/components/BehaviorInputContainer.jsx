@@ -1,50 +1,22 @@
 import React, { useState, useEffect } from 'react';
-//import NumberRange from './NumberRange';
-import NumberSelection from './NumberSelection';
+import { useLocation, useNavigate } from 'react-router-dom';
+import BehaviorInput from './BehaviorInput';
 
-//component to organize inputs for a behavior component
-const BehaviorInput = ({ phase, name, orders, rounds, phaseUpdate, disabled }) => {
-    const [newPhase, setNewPhase] = useState(phase);
-
-    const handleRoundsChange = (e) => {
-        const newVal = parseInt(e);
-        setNewPhase({ ...newPhase, rounds: typeof newVal === 'number' ? newVal : parseInt(e.target?.value) });
-    }
-
-    const handleOrdersChange = (e) => {
-        const newVal = parseInt(e);
-        setNewPhase({ ...newPhase, orders: typeof newVal === 'number' ? newVal : parseInt(e.target?.value) });
-    }
-
-    //bubble up with newPhase
-    useEffect(() => {
-        if (newPhase != phase) {
-            phaseUpdate(newPhase)
-        }
-    }, [newPhase]);
+//behavior input container component
+const BehaviorInputContainer = ({phase, setPhase, label, rounds}) => {
 
     return (
-        <div className='py-1 bg-slate-100'>
-            <NumberSelection
-                name={name}
-                label={rounds.label}
-                min={rounds.min ? rounds.min : 0}
-                max={rounds.max ? rounds.max : 0}
-                val={phase.rounds}
-                setVal={handleRoundsChange}
-                disabled={disabled}
-            />
-            <NumberSelection
-                name={name}
-                label={orders.label}
-                min={orders.min ? orders.min : 0}
-                max={orders.max ? orders.max : 0}
-                val={phase.orders}
-                setVal={handleOrdersChange}
-                disabled={disabled} />
-        </div>
-    )
+        <label className=' bg-slate-700'>{label}
+            <BehaviorInput
+                phase={phase}
+                name={phase}
+                orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
+                rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { rounds } }}
+                phaseUpdate={setPhase}
 
+            />
+        </label>
+    );
 }
 
-export default BehaviorInput;
+export default BehaviorInputContainer;
