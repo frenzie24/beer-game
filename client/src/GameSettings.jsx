@@ -8,15 +8,15 @@ const GameSettings = ({ }) => {
   // State for the game settings
   const [rounds, setRounds] = useState(10); // Default to 10 rounds
   const [role, setRole] = useState(0); // Default role
-  const [entropy, setEntropy] = useState(5); // Default entropy level (1 to 10)
+  const [entropy, setEntropy] = useState(2); // Default entropy level (1 to 10)
   const location = useLocation();
   const [user, setUser] = useState(location.state?.user || null)
   const navigate = useNavigate(); // Use useNavigate for React Router navigation
   const [roles, setRoles] = useState([
-    { role_id: 0, name: "Retailer", user_id: user.id, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
-    { role_id: 1, name: "Wholesaler", user_id: user.id, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
-    { role_id: 2, name: "Distributor", user_id: user.id, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
-    { role_id: 3, name: "Manufacturer", user_id: user.id, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 0, name: "Retailer", user_id: user?.id ? user.id : 1, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 1, name: "Wholesaler", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 2, name: "Distributor", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 3, name: "Manufacturer", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
   ]);
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -92,9 +92,10 @@ const GameSettings = ({ }) => {
     setRounds(val);
   }
 
-  const handleSelectEntropy = (e) => {
-    const val = e.target.value;
-    setEntropy(val);
+
+  const handleBehaviorClick = (e) => {
+    e.preventDefault();
+    debugger;
   }
 
   return (
@@ -103,7 +104,7 @@ const GameSettings = ({ }) => {
         errorMessage={errorMessage}
         onClose={() => setErrorMessage('')}
       />
-      <h2 className="text-4xl font-extrabold mb-4 text-slate-800 text-center">New Game Settings</h2>
+      <h2 className="text-4xl font-extrabold mb-4 text-slate-800 text-center">Game Settings</h2>
 
       <form >
         {/* Rounds Input */}
@@ -151,10 +152,15 @@ const GameSettings = ({ }) => {
           </select>
         </div>
         */}
-        {/* behavior settings */}
-        <label htmlFor='retailerBehavior' className='text-slate-900 text-lg font-bold'>Retailer Behavior
+
+        {/* Submit Button */}
+
+
+      </form>
+       {/* behavior settings */}
+       <label htmlFor='retailerBehavior' className='text-slate-900 text-lg font-bold'>Retailer Behavior
           <ol>
-            <li key='1'  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2">Default Behavior</li>
+            <li key='1'  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
             <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">Random Behavior</li>
             <li key="4"  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">
               Custom Behavior
@@ -165,7 +171,6 @@ const GameSettings = ({ }) => {
 
           </ol>
         </label>
-        {/* Submit Button */}
         <div className="flex justify-center">
           <button
             onClick={handleStartGame}
@@ -174,8 +179,6 @@ const GameSettings = ({ }) => {
             Start Game
           </button>
         </div>
-
-      </form>
     </div>
   );
 };
