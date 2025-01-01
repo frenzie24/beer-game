@@ -6,7 +6,7 @@ const liStyle = 'w-full bg-slate-900 text-slate-200 rounded-md border-2 border-s
 
 const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     //handles bad arguments passed
-    //  if (!handleSelection) throw new Error('BehaviorList component MUST be passed a handleSubmit callback');
+      if (!handleSelection) throw new Error('BehaviorList component MUST be passed a handleSubmit callback');
 
     // controls custom behavior input visibilty, defaults to false
     const [customVisible, setCustomVisible] = useState(false);
@@ -29,9 +29,9 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
             <ol id={'list' + id}>
                 <li key='0' id="0" className={liStyle + " p-2"} onClick={handleBehaviorClick}>Default Behavior</li>
                 <li key='1' id="1" className={liStyle + " p-2 mt-1"} onClick={handleBehaviorClick}>Random Behavior</li>
-                <li key="4" id="4" className={liStyle + " p-2 mt-1"} onClick={handleBehaviorClick}>
-                    {customVisible ? <>Custom Behavior
-                        <Behavior rounds={rounds} onSubmit={handleSelection} /></> :
+                <li key="4" id="4" className={liStyle + " p-2 mt-1"} onClick={handleBehaviorClick}>Custom Behavior
+                    {customVisible ?
+                        <Behavior rounds={rounds} onSubmit={handleSelection} /> :
                         <></>}
 
                 </li>
