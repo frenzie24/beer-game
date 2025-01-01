@@ -136,7 +136,7 @@ const GameSettings = ({ }) => {
           </select>
         </div>
 
-        {/* Random Entropy Level Dropdown */}
+        {/* Random Entropy Level Dropdown
         <div className="mb-4">
           <label htmlFor="entropy" className="block text-sm text-black font-semibold">Random Entropy Level (1-10):</label>
           <select
@@ -150,6 +150,7 @@ const GameSettings = ({ }) => {
             ))}
           </select>
         </div>
+        */}
         {/* behavior settings */}
         <label htmlFor='retailerBehavior' className='text-slate-900 text-lg font-bold'>Retailer Behavior
           <ol>
