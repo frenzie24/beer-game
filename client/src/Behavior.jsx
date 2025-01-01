@@ -93,38 +93,21 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
         <div className="flex flex-row flex-wrap justify-center items-center rounded-md text-slate-100 text-left w-full">
 
             {/*isPhase1Disabled ? <></> :*/}
+            {/* need to add visibility bool to behavior container*/}
             <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
-                {/* need to add visibility bool to behavior container*/}
+
                 <BehaviorInputContainer phase={phase1} name='phase1' setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
-
-                <BehaviorInputContainer phase={phase2} name='phase2' setPhase={setPhase2} label="Phase 2" rounds={phase2MaxRounds} />
-                <BehaviorInputContainer phase={phase3} name='phase3' setPhase={setPhase3} label="Phase 3" rounds={phase3MaxRounds} />
-                {/*
-                <label className='bg-slate-700'> Phase 2
-                    {isPhase2Disabled ? <></> :
-                        <BehaviorInputContainer
-                            phase={phase2}
-                            name='phase2'
-                            orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
-                            rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase2MaxRounds } }}
-                            phaseUpdate={setPhase2}
-
-                        />
-                    }
-                </label>
-                <label className='bg-slate-700'> Phase 3
-                    {isPhase3Disabled ? <></> :
-                        <BehaviorInput
-                            phase={phase3}
-                            name='phase3'
-                            orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
-                            rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase3MaxRounds } }}
-                            phaseUpdate={setPhase3}
-
-                        />}
-                </label>
-                */
+                {/* controls if the phase is visible */}
+                {!isPhase2Disabled ?
+                    <BehaviorInputContainer phase={phase2} name='phase2' setPhase={setPhase2} label="Phase 2" rounds={phase2MaxRounds} />
+                    : <></>
                 }
+                {/* controls if the phase is visible */}
+                {!isPhase2Disabled ?
+                    <BehaviorInputContainer phase={phase3} name='phase3' setPhase={setPhase3} label="Phase 3" rounds={phase3MaxRounds} />
+                    : <></>
+                }
+
                 <div className="flex flex-row flex-wrap justify-center [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700">
                     <input type="submit" onClick={handleSubmit} value="OK"></input>
                     <input type="reset" value="Reset" onClick={handleReset}></input>
