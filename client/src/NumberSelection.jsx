@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const NumberSelection = ({ name, label, min, max, val, setVal,disabled }) => {
+const NumberSelection = ({ name, label, min, max, val, setVal, disabled }) => {
 
 
     const handleChange = (e) => {
@@ -11,8 +11,9 @@ const NumberSelection = ({ name, label, min, max, val, setVal,disabled }) => {
     return (<>
         < div className="w-full [&_*]:w-fit [&_*]:bg-slate-100 text-slate-700 font-semibold flex flex-row flex-wrap justify-between items-center">
 
-            <label htmlFor={`selection${name}`} className='p-1 text-center'>{label}</label>
-            <input className='w-full items-center text-center ml-5'
+            <label className='p-1 text-center'>{label}</label>
+            <input
+                className='w-full items-center text-center mr-2'
                 type="number"
                 value={val}
                 onChange={handleChange}

@@ -13,7 +13,7 @@ const GameSettings = ({ }) => {
   const [user, setUser] = useState(location.state?.user || null)
   const navigate = useNavigate(); // Use useNavigate for React Router navigation
   const [roles, setRoles] = useState([
-    { role_id: 0, name: "Retailer", user_id: user?.id ? user.id : 1, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
+    { role_id: 0, name: "Retailers", user_id: user?.id ? user.id : 1, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
     { role_id: 1, name: "Wholesaler", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
     { role_id: 2, name: "Distributor", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
     { role_id: 3, name: "Manufacturer", user_id: user?.id ? user.id : 1, inventory: 20, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
@@ -130,10 +130,10 @@ const GameSettings = ({ }) => {
             className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
             disabled={false}
           >
-            <option value={0}>Retailer</option>
-            <option value={1}>Wholesaler</option>
-            <option value="2">Distributor</option>
-            <option value="3">Manufacturer</option>
+            <option value={0}>Retailers</option>
+            <option value={1}>Wholesalers</option>
+            <option value="2">Distributors</option>
+            <option value="3">Manufacturers</option>
           </select>
         </div>
 
@@ -158,14 +158,14 @@ const GameSettings = ({ }) => {
 
       </form>
        {/* behavior settings */}
-       <label htmlFor='retailerBehavior' className='text-slate-900 text-lg font-bold'>Retailer Behavior
-          <ol>
+       <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
+          <ol  id='retailerBehavior'>
             <li key='1'  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
             <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">Random Behavior</li>
             <li key="4"  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">
               Custom Behavior
 
-              <Behavior id='retailerBehavior' rounds={rounds} onSubmit={handleBehaviorSubmit} />
+              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
 
             </li>
 
