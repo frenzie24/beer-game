@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import NumberRange from './numberRange';
+//import NumberRange from './numberRange';
 import NumberSelection from '../NumberSelection';
 
 
