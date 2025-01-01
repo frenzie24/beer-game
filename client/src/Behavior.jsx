@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import BehaviorInput from './components/BehaviorInput';
+import BehaviorInput from './components/BehaviorInputContainer';
 import BehaviorContainer from './components/BehaviorContainer';
 
 const emptyPhase = { rounds: 0, orders: 0 };
@@ -36,6 +36,7 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
         }
     }
 
+    //clears all phase data and hides phase2 & 3
     const handleReset = (e) => {
         e.preventDefault();
         setPhase1(emptyPhase);
@@ -52,7 +53,8 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
 
     }
 
-    useEffect(() => {
+    // handles phase2/3 visibility
+    const handlePhaseUpdates = () => {
         if (phase1.rounds > 0 && phase1.rounds < maxRounds) {
             setIsPhase2Disabled(false);
         }
@@ -63,6 +65,10 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
 
         console.log('phase update');
 
+    }
+
+    useEffect(() => {
+        handlePhaseUpdates();
     }, [phase1, phase2, phase3])
 
     return (
@@ -70,12 +76,13 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
 
             {/*isPhase1Disabled ? <></> :*/}
             <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
-                <BehaviorContainer phase={phase1} setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
+                {/* need to add visibility bool to behavior container*/}
+                <BehaviorInputContainer phase={phase1} setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
 
 
                 <label className='bg-slate-700'> Phase 2
                     {isPhase2Disabled ? <></> :
-                        <BehaviorInput
+                        <BehaviorInputContainer
                             phase={phase2}
                             name={phase2}
                             orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
