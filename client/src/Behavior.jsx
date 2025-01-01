@@ -61,10 +61,10 @@ const Behavior = ({ rounds, onSubmit, onCancel }) => {
     }, [phase1, phase2, phase3])
 
     return (
-        <div className="flex flex-row flex-wrap justify-center items-center p-4 w-screen">
+        <div className="flex flex-row flex-wrap justify-center items-center p-4 w-full">
 
 
-            <form className='[&_*]:text-right flex flex-col flex-wrap justify-center' >
+            <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
 
                 <label className=' bg-slate-700'>Phase 1
                     <BehaviorInput

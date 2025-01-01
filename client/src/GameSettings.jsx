@@ -21,7 +21,7 @@ const GameSettings = ({ }) => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleBehaviorSubmit = ({phases}) => {
+  const handleBehaviorSubmit = ({ phases }) => {
     debugger;
     console.log(phases)
   }
@@ -32,18 +32,18 @@ const GameSettings = ({ }) => {
     e.preventDefault();
 
     try {
-     // const response = await Connection.newGame(data);
+      // const response = await Connection.newGame(data);
       const response = await fetch('http://localhost:3001/api/games/', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         credentials: 'include',
         body: JSON.stringify(data),
-    });
+      });
 
-    debugger;
-    if (response.ok) {
+      debugger;
+      if (response.ok) {
         debugger;
         const data = await response.json();
         console.log('GAME CREATED:', data);
@@ -53,7 +53,7 @@ const GameSettings = ({ }) => {
         //
 
         // Redirect to profile page after successful login
-    }
+      }
       debugger;
       if (response) {
         debugger;
@@ -150,9 +150,13 @@ const GameSettings = ({ }) => {
             ))}
           </select>
         </div>
-
-        <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
-
+        <ol>
+          <li key="1" className="w-full">
+            <label htmlFor='retailerBehavior' className='text-slate-900'>Retailer Behavior
+            <Behavior id='retailerBehavior' rounds={rounds} onSubmit={handleBehaviorSubmit} />
+            </label>
+          </li>
+        </ol>
         {/* Submit Button */}
         <div className="flex justify-end">
           <button
