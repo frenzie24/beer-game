@@ -166,18 +166,20 @@ const GameSettings = ({ }) => {
 
       </form>
 
+      <BehaviorsList id="4" name="Customers" handleSelection={() => { return true; }} />
       {role == 0 ? <></>
         : <BehaviorsList id="0" name="Retailers" handleSelection={() => { return true; }} />
       }
 
       {role == 1 ? <></>
-        :<BehaviorsList id="1" name="Wholesalers" handleSelection={() => { return true; }} />      }
+        : <BehaviorsList id="1" name="Wholesalers" handleSelection={() => { return true; }} />}
 
       {role == 2 ? <></>
-        :<BehaviorsList id="2" name="Distributers" handleSelection={() => { return true; }} />      }
+        : <BehaviorsList id="2" name="Distributers" handleSelection={() => { return true; }} />}
 
       {role == 3 ? <></>
-        :<BehaviorsList id="3" name="Manufacturers" handleSelection={() => { return true; }} />      }
+        : <BehaviorsList id="3" name="Manufacturers" handleSelection={() => { return true; }} />}
+
       {/* behavior settings
       TODO: container component to wrap <li> and handle click to expand
       list container component
