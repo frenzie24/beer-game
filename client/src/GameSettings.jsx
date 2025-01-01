@@ -157,12 +157,27 @@ const GameSettings = ({ }) => {
 
 
       </form>
-       {/* behavior settings */}
-       <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
-          <ol  id='retailerBehavior'>
-            <li key='1'  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
-            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">Random Behavior</li>
-            <li key="4"  className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1">
+      {/* behavior settings */}
+      {role === 0 ? <></> : <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
+        <ol id='retailerBehavior'>
+          <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+          <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+          <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
+            Custom Behavior
+
+            <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+
+          </li>
+
+        </ol>
+      </label>
+      }
+      {role === 0 ? <></> :
+        <label className='text-slate-900 text-lg font-bold'>Wholesalers Behavior
+          <ol id='retailerBehavior'>
+            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
               Custom Behavior
 
               <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
@@ -171,14 +186,46 @@ const GameSettings = ({ }) => {
 
           </ol>
         </label>
-        <div className="flex justify-center">
-          <button
-            onClick={handleStartGame}
-            className=" [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700"
-          >
-            Start Game
-          </button>
-        </div>
+      }
+      {role === 0 ? <></> :
+        <label className='text-slate-900 text-lg font-bold'>Distributers Behavior
+          <ol id='retailerBehavior'>
+            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
+              Custom Behavior
+
+              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+
+            </li>
+
+          </ol>
+        </label>
+      }
+
+      {role === 0 ? <></> :
+        <label className='text-slate-900 text-lg font-bold'>Manufacturers Behavior
+          <ol id='retailerBehavior'>
+            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
+            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
+            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
+              Custom Behavior
+
+              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+
+            </li>
+
+          </ol>
+        </label>
+      }
+      <div className="flex justify-center">
+        <button
+          onClick={handleStartGame}
+          className=" [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700"
+        >
+          Start Game
+        </button>
+      </div>
     </div>
   );
 };
