@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 //label and number selection component, val and setVal must be passed
 
 const NumberSelection = ({ name = '', label, min = 0, max = 20, val, setVal, disabled = false }) => {
-    if (!val || !setVal) throw new Error('NumberSelection Component requires a passed val and setVal function');
+    if (!(val || setVal)) throw new Error('NumberSelection Component requires a passed val and setVal function');
     //Bubbles up value change
     /*
     @param {string} name - defaults to ''
@@ -20,6 +20,7 @@ const NumberSelection = ({ name = '', label, min = 0, max = 20, val, setVal, dis
         console.log('number input val update')
     };
 
+    // if a label is not pased, the label portion of the component will not render
     return (<>
         < div className="w-full [&_*]:w-fit [&_*]:bg-slate-100 text-slate-700 font-semibold flex flex-row flex-wrap justify-between items-center">
 
