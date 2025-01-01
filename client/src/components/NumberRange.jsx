@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const NumberRange = ({labelText, min, max, val, setVal}) => {
-
-
     const handlehCange = (e) => {
         setVal(e.target.value);
     };

@@ -43,7 +43,8 @@ const Behavior = ({ rounds, onSubmit, onCancel }) => {
 
     const handleCancel = (e) => {
         e.preventDefault();
-        console.log('cancel called on behavior view.  nav to previous view');
+        console.log('cancel called on behavior view.\nCall onCancel if passed.\nNav to previous view if not passed');
+
     }
 
     useEffect(() => {
@@ -102,7 +103,7 @@ const Behavior = ({ rounds, onSubmit, onCancel }) => {
                 <div className="flex flex-row flex-wrap justify-center [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700">
                     <input type="submit" onClick={handleSubmit} value="OK"></input>
                     <input type="reset" value="Reset" onClick={handleReset}></input>
-                    <input type="reset" value="Cancel" onClick={handleCancel}></input>
+                   {onCancel ? <input type="reset" value="Cancel" onClick={handleCancel}></input> :<></> }
                 </div>
             </form>
 

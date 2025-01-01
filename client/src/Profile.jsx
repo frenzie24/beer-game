@@ -56,7 +56,7 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
-    const response = await fetch('http://localhost:5432/api/users/edit', {
+    const response = await fetch('http://localhost:3001/api/users/edit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

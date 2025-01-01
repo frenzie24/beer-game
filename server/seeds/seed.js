@@ -1,21 +1,22 @@
 const sequelize = require('../config/connection');
-const { User, Game, Player, History, Behavior } = require('../models');
+const { User, Game, Player, History } = require('../models');
 
 // data to seed with
 const userData = require('./userData.json');
 const gameData = require('./gameData.json')
 const playerData = require('./playerData.json');
 const historyData = require('./historyData.json');
-const BehaviorData = require('./behaviorData.json')
 
 const seedDatabase = async () => {
   await sequelize.sync({ force: true });
 
-  console.log('userData:', userData);
-  const users = await User.bulkCreate(userData, {
-    individualHooks: true,
-    returning: true,
-  });
+  try {
+    console.log('userData:', userData);
+    const users = await User.bulkCreate(userData, {
+      individualHooks: true,
+      returning: true,
+    });
+  } catch (err) { console.log(err); }
 
   /*
     console.log('gameData:', gameData);
@@ -37,7 +38,7 @@ const seedDatabase = async () => {
       returning: true,
     });
   */
-  process.exit(0);
+   process.exit(0);
 };
 
 seedDatabase();

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorModal from './components/ErrorModal';
-import Connection from './workers/Conncetion'
+import Connection from './workers/Conncetion';
+import Behavior from './Behavior';
 
 const GameSettings = ({ }) => {
   // State for the game settings
@@ -20,6 +21,11 @@ const GameSettings = ({ }) => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
+  const handleBehaviorSubmit = ({phases}) => {
+    debugger;
+    console.log(phases)
+  }
+
   // Handle form submission to start the game
   const handleStartGame = async (e) => {
     const data = { game: { round: 0, rounds, selectedRole: role, entropy, history: '' }, players: roles };
@@ -27,7 +33,7 @@ const GameSettings = ({ }) => {
 
     try {
      // const response = await Connection.newGame(data);
-      const response = await fetch('http://localhost:5432/api/games/', {
+      const response = await fetch('http://localhost:3001/api/games/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -145,6 +151,8 @@ const GameSettings = ({ }) => {
           </select>
         </div>
 
+        <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+
         {/* Submit Button */}
         <div className="flex justify-end">
           <button
@@ -154,6 +162,7 @@ const GameSettings = ({ }) => {
             Start Game
           </button>
         </div>
+
       </form>
     </div>
   );
