@@ -4,9 +4,13 @@ import BehaviorInput from './components/BehaviorInput';
 const Behavior = ({ rounds }) => {
     const [maxRounds, setMaxRounds] = useState(rounds ? typeof rounds === 'number' ? rounds : 10 : 10)
 
-    const [phase1, setPhase1] = useState({ rounds: maxRounds ? maxRounds : 0, orders: 0 });
+    const [phase1, setPhase1] = useState({ rounds: 0, orders: 0 });
     const [phase2, setPhase2] = useState({ rounds: 0, orders: 0 });
     const [phase3, setPhase3] = useState({ rounds: 0, orders: 0 });
+
+    const [isPhase2Disabled, setIsPhase2Disabled] = useState(true);
+
+    const [isPhase3Disabled, setIsPhase3Disabled] = useState(true);
 
     const handlePhase1Change = (e) => {
         setPhase1({ ...phase1, rounds: parseInt(e.target.value) });
@@ -25,71 +29,63 @@ const Behavior = ({ rounds }) => {
         setPhase1({ ...phase1, orders: newVal })
     }
 
-    const isPhase2Disabled = phase1.rounds >= rounds;
-    const isPhase3Disabled = phase1.rounds === phase2.rounds && phase2.rounds >= rounds;
+    const phase2MaxRounds = () => {
+        const max = (maxRounds - phase1.rounds) ? phase1.rounds : 0;
+
+        return max;
+    }
+    const phase3MaxRounds = () => {
+        const max = (maxRounds - phase1.rounds - phase2.rounds) ? phase1.rounds : 0;
+
+        return max;
+    }
+
+    useEffect(() => {
+        if (phase1.rounds > 0 && phase1.rounds < maxRounds) {
+            setIsPhase2Disabled(false);
+        }
+
+        if (phase2.rounds > 0 && phase2.rounds < maxRounds) {
+            setIsPhase3Disabled(false);
+        }
+
+        console.log('phase update');
+
+    }, [phase1, phase2, phase3])
 
     return (
         <div className="flex flex-row flex-wrap justify-center items-center p-4 w-screen">
-            <h2 className='w-full text-center'>MAX ROUNDS: {maxRounds}</h2>
+
 
             <form className='[&_*]:text-right w-54' >
-                <div className="w-full">
-                    <label>
-                        Phase 1 Rounds:
-                        <input
-                            type="number"
-                            value={phase1.rounds}
-                            onChange={handlePhase1Change}
-                            min="0"
-                            max={maxRounds}
-                        />
-                    </label></div>
-                <div className="w-full">
-                    <label>
-                        Phase 2 Rounds:
-                        <input
-                            type="number"
-                            value={phase2.rounds}
-                            onChange={handlePhase2Change}
-                            min={phase1.rounds}
-                            max={maxRounds - phase1.rounds}
-                            disabled={isPhase2Disabled}
-                        />
-                    </label></div>
 
-                <BehaviorInput
-                    phase={phase1}
-                    orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
-                    rounds={{ label: "Number of Rounds to Order", min: "0", max: { maxRounds } }}
-                    phaseUpdate={setPhase1}
-                />
-                {/*
-                <NumberRange labelText="Phase 1 Rounds: " min="0" max={maxRounds}/>
-                <NumberSelection labelText={"phase 1 orders"} min='0' max="50" val={phase1.orders} setVal={handleOrderChange}/>
+                <label>Phase 1
+                    <BehaviorInput
+                        phase={phase1}
+                        orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
+                        rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { maxRounds } }}
+                        phaseUpdate={setPhase1}
 
-                */}
-                <div>
-                    phase 1 orders  <input
-                        type="number"
-                        value={phase1.orders}
-                        onChange={handleOrderChange}
-                        min="0"
-                        max="100"
                     />
-                </div>
-
-                <div className="w-full">
-                    <label>
-                        Phase 3 Rounds:
-                        <input
-                            type="number"
-                            value={phase3.rounds}
-                            onChange={handlePhase3Change}
-                            min={phase2.rounds}
-                            max={maxRounds - phase1.rounds - phase2.rounds}
-                            disabled={isPhase3Disabled}
-                        />
-                    </label></div>
+                </label>
+                <label> Phase 2
+                    <BehaviorInput
+                        phase={phase2}
+                        orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
+                        rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase2MaxRounds } }}
+                        phaseUpdate={setPhase2}
+                        disabled={isPhase2Disabled}
+                    />
+                </label>
+                <label> Phase 3
+                    <BehaviorInput
+                        phase={phase3}
+                        orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
+                        rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { phase3MaxRounds } }}
+                        phaseUpdate={setPhase3}
+                        disabled={isPhase3Disabled}
+                    />
+                </label>
             </form>
 
         </div>
