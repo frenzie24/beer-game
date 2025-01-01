@@ -172,7 +172,7 @@ const GameSettings = ({ }) => {
         </ol>
       </label>
       }
-      {role === 0 ? <></> :
+      {role === 1 ? <></> :
         <label className='text-slate-900 text-lg font-bold'>Wholesalers Behavior
           <ol id='retailerBehavior'>
             <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
@@ -187,7 +187,7 @@ const GameSettings = ({ }) => {
           </ol>
         </label>
       }
-      {role === 0 ? <></> :
+      {role === 2 ? <></> :
         <label className='text-slate-900 text-lg font-bold'>Distributers Behavior
           <ol id='retailerBehavior'>
             <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
@@ -203,7 +203,7 @@ const GameSettings = ({ }) => {
         </label>
       }
 
-      {role === 0 ? <></> :
+      {role === 3 ? <></> :
         <label className='text-slate-900 text-lg font-bold'>Manufacturers Behavior
           <ol id='retailerBehavior'>
             <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
