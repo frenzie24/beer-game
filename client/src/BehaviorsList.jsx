@@ -75,9 +75,10 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     return (
         <article className='bg-slate-300 p-1 my-2 rounded-lg'>
 
-            <label className='text-slate-900 text-lg font-bold capitalize'><span></span>{name} Behavior {(selected) ? 'current behavior: ' + selected.name : ''}
-                <DelayInput name={name} onChange={handleDelayChange} />
-                <CostsInput name={name} onChange={handleCostsChange} />
+            <label className='text-slate-900 text-lg font-bold capitalize'><span>{name} Behavior {(selected) ? 'current behavior: ' + selected.name : ''}</span>
+                {id != 4 ? <><DelayInput name={name} onChange={handleDelayChange} />
+                    <CostsInput name={name} onChange={handleCostsChange} /> </> :
+                    <></>}
                 <ol id={'list' + id}>
                     <li key='0' id="0" className={liStyle + " p-2"} onClick={handleBehaviorClick}>Default Behavior</li>
                     <li key='1' id="1" className={liStyle + " p-2 mt-1"} onClick={handleBehaviorClick}>Random Behavior</li>
