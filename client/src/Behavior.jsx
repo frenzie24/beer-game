@@ -8,16 +8,13 @@ const emptyPhase = {
 };
 
 //Behavior view component
-const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
+const Behavior = ({ name = 'custom', rounds, onSubmit, onCancel }) => {
     //is this needed?
     const [maxRounds, setMaxRounds] = useState(rounds ? typeof rounds === 'number' ? rounds : 10 : 10)
     //phase objs, max 3 phases of behavior, all default to 0 values
     const [phase1, setPhase1] = useState({ rounds: 0, orders: 0 });
     const [phase2, setPhase2] = useState({ rounds: 0, orders: 0 });
     const [phase3, setPhase3] = useState({ rounds: 0, orders: 0 });
-
-    //this was the beginning of exploring hiding behavior input until custom behavior element is clicked
-    const [isPhase1Disabled, setIsPhase1Disabled] = useState(isClicked ? isClicked : true);
 
     //controls phase2/3 visibility, defaults to true
     const [isPhase2Disabled, setIsPhase2Disabled] = useState(true);
@@ -36,13 +33,20 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
         const max = (maxRounds - phase1.rounds - phase2.rounds) ? phase1.rounds : 0;
         return max;
     }
-
-
+    /*
+        const handleChange = (e) => {
+            e.preventDefault();
+            onChange({
+                phase1, phase2, phase3
+            })
+        }
+    */
     // handles submit and bubbles up phase1-3 data
     const handleSubmit = (e) => {
+        debugger;
         e.preventDefault();
         try {
-            onSubmit({ phase1, phase2, phase3 });
+            onSubmit({ name, phase1, phase2, phase3 });
         } catch (err) {
             debugger;
         }
@@ -68,15 +72,24 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
 
     // handles phase2/3 visibility
     const handlePhaseUpdates = () => {
-        if (phase1.rounds > 0 && phase1.rounds < maxRounds) {
-            setIsPhase2Disabled(false);
-        }
 
+        // check phase 3 1st
         if (phase2.rounds > 0 && phase2.rounds < maxRounds) {
             setIsPhase3Disabled(false);
+        } else {
+            setIsPhase3Disabled(true)
+        }
+        //check phase 2
+        if (phase1.rounds > 0 && phase1.rounds < maxRounds) {
+            setIsPhase2Disabled(false);
+        } else {
+            // disable both phase 2 and 3
+            setIsPhase2Disabled(true);
+            setIsPhase3Disabled(true);
         }
 
         console.log('phase update');
+        // onChange({phase1, phase2, phase3});
 
     }
     // should i stop being lazy and separate these into 3 useEffects?
@@ -95,7 +108,7 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
 
             {/*isPhase1Disabled ? <></> :*/}
             {/* need to add visibility bool to behavior container*/}
-            <form className='[&_*]:text-right flex flex-col flex-wrap justify-center w-full' >
+            <form className='text-left flex flex-col flex-wrap justify-center w-full' >
 
                 <BehaviorInputContainer phase={phase1} name='phase1' setPhase={setPhase1} label="Phase 1" rounds={maxRounds} />
                 {/* controls if the phase is visible */}
@@ -109,9 +122,10 @@ const Behavior = ({ rounds, onSubmit, onCancel, isClicked }) => {
                     : <></>
                 }
 
-                <div className="flex flex-row flex-wrap justify-center [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700">
-                    <input type="submit" onClick={handleSubmit} value="OK"></input>
-                    <input type="reset" value="Reset" onClick={handleReset}></input>
+                <div className="flex flex-row flex-wrap justify-center [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-4 [&_*]:rounded-md [&_*]:bg-slate-700">
+
+                    <input type="reset" className="w-24 text-center" value="Clear" onClick={handleReset}></input>
+                    <input type="submit" onClick={handleSubmit} value="Create New Behavior"></input>
                     {onCancel ? <input type="reset" value="Cancel" onClick={handleCancel}></input> : <></>}
                 </div>
             </form>
