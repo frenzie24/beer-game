@@ -12,6 +12,15 @@ const GameSettings = ({ }) => {
   const [entropy, setEntropy] = useState(2); // Default entropy level (1 to 10)
   const location = useLocation();
   const [user, setUser] = useState(location.state?.user || null)
+  const [customerBehavior, setCustomerBehavior] = useState();
+
+  const [retailerBehavior, setRetailerBehavior] = useState();
+
+  const [wholesalerBehavior, setWholesalerBehavior] = useState();
+
+  const [distributionerBehavior, setDistributionerBehavior] = useState();
+
+  const [manufacturerBehavior, setManufacturerBehavior] = useState();
   const navigate = useNavigate(); // Use useNavigate for React Router navigation
   const [roles, setRoles] = useState([
     { role_id: 0, name: "Retailers", user_id: user?.id ? user.id : 1, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
@@ -106,88 +115,79 @@ const GameSettings = ({ }) => {
     debugger;
   }
 
+useEffect(()=> {
+  console.log(customerBehavior)
+  debugger;
+},[customerBehavior, retailerBehavior, manufacturerBehavior, distributionerBehavior, wholesalerBehavior])
+
   return (
-    <div className="game-settings-container p-6 bg-slate-200 rounded-md shadow-md">
-      <ErrorModal
-        errorMessage={errorMessage}
-        onClose={() => setErrorMessage('')}
-      />
-      <h2 className="text-4xl font-extrabold mb-4 text-slate-800 text-center">Game Settings</h2>
+    <div className="w-screenp-6 bg-slate-900 shadow-md">
+      <div className='max-w-3xl rounded-md bg-slate-200 shadow-lg mx-auto py-8 px-4'>
+        <ErrorModal
+          errorMessage={errorMessage}
+          onClose={() => setErrorMessage('')}
+        />
+        <h2 className="text-5xl font-extrabold text-slate-800 text-center">Game Settings</h2>
 
-      <form >
-        {/* Rounds Input */}
-        <div className="mb-4">
-          <label htmlFor="rounds" className="block text-sm text-black font-semibold">Rounds:</label>
-          <input
-            type="number"
-            id="rounds"
-            value={rounds}
-            onChange={handleOnRoundsChange}
-            min="1"
-            className="mt-1 px-3 py-2 border rounded-md w-full bg-slate-900"
-          />
-        </div>
+        <form >
+          {/* Rounds Input */}
+          <div className="mb-4">
+            <label htmlFor="rounds" className="block text-sm text-black font-semibold">Weeks to Run</label>
+            <input
+              type="number"
+              id="rounds"
+              value={rounds}
+              onChange={handleOnRoundsChange}
+              min="1"
+              className="mt-1 px-3 py-2 border rounded-md w-full bg-slate-900"
+            />
+          </div>
 
-        {/* Role Selection Dropdown */}
-        <div className="mb-4">
-          <label htmlFor="role" className="block text-sm text-black font-semibold">Select Role:</label>
-          <select
-            id="role"
-            value={role}
-            onChange={handleSelectRole}
-            className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
-            disabled={false}
+          {/* Role Selection Dropdown */}
+          <div className="mb-4">
+            <label htmlFor="role" className="block text-sm text-black font-semibold">Select Role:</label>
+            <select
+              id="role"
+              value={role}
+              onChange={handleSelectRole}
+              className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
+              disabled={false}
+            >
+              <option value={0}>Retailers</option>
+              <option value={1}>Wholesalers</option>
+              <option value="2">Distributors</option>
+              <option value="3">Manufacturers</option>
+            </select>
+          </div>
+
+        </form>
+
+        <BehaviorsList id="4" name="Customers" handleSelection={setCustomerBehavior} />
+        {role == 0 ? <></>
+          : <BehaviorsList id="0" name="Retailers" handleSelection={setRetailerBehavior} />
+        }
+
+        {role == 1 ? <></>
+          : <BehaviorsList id="1" name="Wholesalers" handleSelection={setWholesalerBehavior} />}
+
+        {role == 2 ? <></>
+          : <BehaviorsList id="2" name="Distributers" handleSelection={setDistributionerBehavior} />}
+
+        {role == 3 ? <></>
+          : <BehaviorsList id="3" name="Manufacturers" handleSelection={setManufacturerBehavior} />}
+
+        {/* Submit Button */}
+
+        <div className="flex justify-center">
+          <button
+            onClick={handleStartGame}
+            className=" [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700"
           >
-            <option value={0}>Retailers</option>
-            <option value={1}>Wholesalers</option>
-            <option value="2">Distributors</option>
-            <option value="3">Manufacturers</option>
-          </select>
+            Start Game
+          </button>
         </div>
 
-        {/* Random Entropy Level Dropdown
-        <div className="mb-4">
-          <label htmlFor="entropy" className="block text-sm text-black font-semibold">Random Entropy Level (1-10):</label>
-          <select
-            id="entropy"
-            value={entropy}
-            onChange={handleSelectEntropy}
-            className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
-          >
-            {[...Array(10).keys()].map((i) => (
-              <option key={i + 1} value={i + 1}>{i + 1}</option>
-            ))}
-          </select>
-        </div>
-        */}
 
-
-
-      </form>
-
-      <BehaviorsList id="4" name="Customers" handleSelection={() => { return true; }} />
-      {role == 0 ? <></>
-        : <BehaviorsList id="0" name="Retailers" handleSelection={() => { return true; }} />
-      }
-
-      {role == 1 ? <></>
-        : <BehaviorsList id="1" name="Wholesalers" handleSelection={() => { return true; }} />}
-
-      {role == 2 ? <></>
-        : <BehaviorsList id="2" name="Distributers" handleSelection={() => { return true; }} />}
-
-      {role == 3 ? <></>
-        : <BehaviorsList id="3" name="Manufacturers" handleSelection={() => { return true; }} />}
-
-         {/* Submit Button */}
-
-      <div className="flex justify-center">
-        <button
-          onClick={handleStartGame}
-          className=" [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700"
-        >
-          Start Game
-        </button>
       </div>
     </div>
   );
