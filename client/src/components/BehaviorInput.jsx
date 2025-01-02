@@ -27,7 +27,7 @@ const BehaviorInput = ({ phase, name, orders, rounds, phaseUpdate, disabled }) =
 
     // numberselection components to handle order and round selections
     return (
-        <div className='py-1 bg-slate-100'>
+        <div className='py-1 bg-slate-100 flex flex-col flex-wrap items-apart'>
 
             <NumberSelection
                 name={name}

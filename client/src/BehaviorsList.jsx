@@ -67,9 +67,12 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     const [selected, setSelected] = useState(defaultBehavior(rounds))
     // controls custom behavior input visibilty, defaults to false
     const [customVisible, setCustomVisible] = useState(false);
+    const [customCreated, setCustomCreated] = useState(false);
 
     const handleSelect = (behavior) => {
-        setSelected(behavior)
+        const newBehavior = {...behavior };
+        setSelected(newBehavior)
+        setCustomCreated(true);
     }
 
 
@@ -104,7 +107,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
                 // declare this always.
                 // bools like to misbave when updating their state to the negation of their current state
                 // especially when done using the react useState
-                handleSelect({ name: 'custom', phase1: selected.phase1, phase2:selected.phase2, phase3: selected.phase3 })
+                if (customCreated) handleSelect({ name: 'custom', phase1: selected.phase1, phase2: selected.phase2, phase3: selected.phase3 })
                 setCustomVisible(true)
                 break;
 
@@ -112,7 +115,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
 
     }
     return (
-        <article>
+        <article className='bg-slate-300 p-1 my-2 rounded-lg'>
             <label className='text-slate-900 text-lg font-bold capitalize'><span></span>{name} Behavior {(selected) ? 'current behavior: ' + selected.name : ''}
                 <ol id={'list' + id}>
                     <li key='0' id="0" className={liStyle + " p-2"} onClick={handleBehaviorClick}>Default Behavior</li>
