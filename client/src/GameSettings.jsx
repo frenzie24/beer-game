@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorModal from './components/ErrorModal';
 import Connection from './workers/Conncetion';
 import Behavior from './Behavior';
+import BehaviorsList from './BehaviorsList';
 
 const GameSettings = ({ }) => {
   // State for the game settings
@@ -100,7 +101,7 @@ const GameSettings = ({ }) => {
     const childBehaviorEle = e.target.children[0];
     switch (listItemKey) {
       case "4":
-          childBehaviorEle
+        childBehaviorEle
     }
     debugger;
   }
@@ -160,71 +161,26 @@ const GameSettings = ({ }) => {
         </div>
         */}
 
-        {/* Submit Button */}
 
 
       </form>
-      {/* behavior settings */}
-      {role== 0 ? <></> : <label className='text-slate-900 text-lg font-bold'>Retailers Behavior
-        <ol id='retailerBehavior'>
-          <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
-          <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
-          <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
-            Custom Behavior
 
-            <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
-
-          </li>
-
-        </ol>
-      </label>
-      }
-      {role == 1 ? <></> :
-        <label className='text-slate-900 text-lg font-bold'>Wholesalers Behavior
-          <ol id='retailerBehavior'>
-            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
-            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
-            <li key="3" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={()=>{return  } }>
-              Custom Behavior
-
-              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} isClicked={false}/>
-
-            </li>
-
-          </ol>
-        </label>
-      }
-      {role == 2 ? <></> :
-        <label className='text-slate-900 text-lg font-bold'>Distributers Behavior
-          <ol id='retailerBehavior'>
-            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
-            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
-            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
-              Custom Behavior
-              <div hidden>
-                <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
-              </div>
-            </li>
-
-          </ol>
-        </label>
+      <BehaviorsList id="4" name="Customers" handleSelection={() => { return true; }} />
+      {role == 0 ? <></>
+        : <BehaviorsList id="0" name="Retailers" handleSelection={() => { return true; }} />
       }
 
-      {role == 3 ? <></> :
-        <label className='text-slate-900 text-lg font-bold'>Manufacturers Behavior
-          <ol id='retailerBehavior'>
-            <li key='1' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2" onClick={handleBehaviorClick}>Default Behavior</li>
-            <li key='2' className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>Random Behavior</li>
-            <li key="4" className="w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 p-2 mt-1" onClick={handleBehaviorClick}>
-              Custom Behavior
+      {role == 1 ? <></>
+        : <BehaviorsList id="1" name="Wholesalers" handleSelection={() => { return true; }} />}
 
-              <Behavior rounds={rounds} onSubmit={handleBehaviorSubmit} />
+      {role == 2 ? <></>
+        : <BehaviorsList id="2" name="Distributers" handleSelection={() => { return true; }} />}
 
-            </li>
+      {role == 3 ? <></>
+        : <BehaviorsList id="3" name="Manufacturers" handleSelection={() => { return true; }} />}
 
-          </ol>
-        </label>
-      }
+         {/* Submit Button */}
+
       <div className="flex justify-center">
         <button
           onClick={handleStartGame}
