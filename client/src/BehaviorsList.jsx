@@ -1,64 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
+import { defaultBehavior, randomBehavior } from './workers/Behaviors'
 import Behavior from './Behavior';
+import DelayInput from './components/DelayInput';
+import CostsInput from './components/CostsInput';
 //increase element legiblity by condensing className
 const liStyle = 'w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 capitalize';
-const defaultRounds = 10;
-const defaultBehavior = ({ rounds = defaultRounds }) => {
-    return {
-        name: 'default',
-        phase1: {
-            rounds: 4,
-            orders: 4
-        },
-        phase2: {
-            rounds: rounds,
-            orders: 8
-        }
-    };
-}
 
-const randomBehavior = ({ rounds = defaultRounds }) => {
-    const getRandomInt = (max, mod = 1) => {
-        const rand = Math.floor(Math.random() * max * mod) + 1;
-        return rand;
-    }
 
-    const behavior = {
-        name: 'Random',
-        phase1: {
-            rounds: getRandomInt(rounds),
-            orders: getRandomInt(20)
-        },
-        phase2: {
-            rounds: getRandomInt(rounds),
-            orders: getRandomInt(20)
-        },
-        phase3: {
-            rounds: getRandomInt(rounds),
-            orders: getRandomInt(20)
-        },
-    };
-    return behavior;
-}
-
-const lowToHighBehavior = ({ rounds = defaultRounds }) => {
-    return {
-        name: 'Increase Orders Over Time ',
-        phase1: {
-            rounds: 3,
-            orders: 4
-        },
-        phase2: {
-            rounds: 3,
-            orders: 8
-        },
-        phase3: {
-            rounds: rounds,
-            orders: 12
-        }
-    };
-}
 const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     //handles bad arguments passed
     if (!handleSelection) throw new Error('BehaviorList component MUST be passed a handleSubmit callback');
@@ -67,15 +15,25 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     const [selected, setSelected] = useState(defaultBehavior(rounds))
     // controls custom behavior input visibilty, defaults to false
     const [customVisible, setCustomVisible] = useState(false);
+    // enables selecting custom behavior by clicking the custom behavior element
     const [customCreated, setCustomCreated] = useState(false);
+    const [delay, setDelay] = useState(1);
+    const [costs, setCosts] = useState({ inventory: 0.50, backLog: 1.00 })
 
     const handleSelect = (behavior) => {
-        const newBehavior = {...behavior };
+        const newBehavior = { ...behavior, delay };
         setSelected(newBehavior)
         setCustomCreated(true);
     }
 
+    const handleCostsChange = (val) => {
+        const newCosts = { ...val };
+        setCosts(newCosts);
+    }
 
+    const handleDelayChange = (val) => {
+        setDelay(val);
+    }
 
     const handleBehaviorClick = (e) => {
         e.preventDefault();
@@ -116,7 +74,10 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     }
     return (
         <article className='bg-slate-300 p-1 my-2 rounded-lg'>
+
             <label className='text-slate-900 text-lg font-bold capitalize'><span></span>{name} Behavior {(selected) ? 'current behavior: ' + selected.name : ''}
+                <DelayInput name={name} onChange={handleDelayChange} />
+                <CostsInput name={name} onChange={handleCostsChange} />
                 <ol id={'list' + id}>
                     <li key='0' id="0" className={liStyle + " p-2"} onClick={handleBehaviorClick}>Default Behavior</li>
                     <li key='1' id="1" className={liStyle + " p-2 mt-1"} onClick={handleBehaviorClick}>Random Behavior</li>
@@ -127,6 +88,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
 
                     </li>
                 </ol>
+
             </label>
         </article>
     )

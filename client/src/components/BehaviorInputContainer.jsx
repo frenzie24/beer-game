@@ -12,8 +12,8 @@ const BehaviorInputContainer = ({ phase, setPhase, label, rounds }) => {
         <BehaviorInput
             phase={phase}
             name={phase}
-            orders={{ label: 'Orders per Turn', min: "0", max: "25" }}
-            rounds={{ label: "Turns of Ordering Behavior", min: "0", max: { rounds } }}
+            orders={{ label: 'Orders per Week', min: "0", max: "25" }}
+            rounds={{ label: "Number of Weeks to Repeat Order", min: "0", max: { rounds } }}
             phaseUpdate={setPhase}
 
         />
