@@ -12,7 +12,7 @@ import { roleBgColors } from '../workers/GameConsts';
 */
 //TDO: move everything we are tracking to passed role obj
 const PlayerRole = ({ role, received, onOrder, isActive, onNextPlayer, isDisabled, }) => {
-debugger;
+
   // instead of pending received we track pending orders for the user
   const [ordered, setOrdered] = useState(role.ordered)
   const [pendingOrders, setPendingOrdered] = useState(role?.pendingOrders || 0);

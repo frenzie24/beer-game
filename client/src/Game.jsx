@@ -59,13 +59,14 @@ const Game = () => {
     const [selectedRole, setSelectedRole] = useState(location.state?.role || 0);
 
     // behavior objects stored in an array?
-    const [behaviors, setBehaviors] = useState(location.state?.behaviors || [defaultBehavior, defaultBehavior, defaultBehavior, defaultBehavior, defaultBehavior]);
   // get behaviors from passed settings or use default behaviors if undefined
     const [customerBehavior, setCustomerBehavior] = useState(location.state?.customerBehavior || defaultBehavior);
     const [retailerBehavior, setRetailerBehavior] = useState(location.state?.retailerBehavior || defaultBehavior);
     const [wholesalerBehavior, setWholesalerBehavior] = useState(location.state?.wholesalerBehavior || defaultBehavior);
     const [distributionerBehavior, setDistributionerBehavior] = useState(location.state?.distributionerBehavior || defaultBehavior);
     const [manufacturerBehavior, setManufacturerBehavior] = useState(location.state?.manufacturerBehavior || defaultBehavior);
+
+    const [behaviors, setBehaviors] = useState(location.state?.behaviors || [retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior, customerBehavior]);
 
     const [isLoading, setIsLoading] = useState(false);
     const [gameOver, setGameOver] = useState(false);
@@ -127,7 +128,8 @@ const Game = () => {
 
 
                 // call randomOrders()
-                const orderAmount = behaviors[index];
+                const orderAmount = behaviors[index].phase1.orders;
+                debugger;
                 const randomOrderAmount = randomOrders(entropy) * index;
                 entry.ordered = orderAmount;
              //   entry.ordered = randomOrderAmount;

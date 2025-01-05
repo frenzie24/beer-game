@@ -43,7 +43,7 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
           {player.isHistoryVisible ? 'Hide History' : 'Show History'}
         </button>
 
-        {/* History content - toggle visibility based on state */}
+        {/* History content - toggle visibility based on state
         {player.isHistoryVisible && (
           <div className="mt-4">
             {history.length > 0 ? (
@@ -63,6 +63,7 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
             )}
           </div>
         )}
+        */}
       </div>
     </div>
   )
