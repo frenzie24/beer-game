@@ -72,12 +72,12 @@ const Game = () => {
     const [gameOver, setGameOver] = useState(false);
     const [user, setUser] = useState(location.state?.user || null);
 
-    const [history, setHistory] = useState(location.state.history ? splitFilterJSON(location.state.history) : [[], [], [], []])
+    const [history, setHistory] = useState(location.state.history ? splitFilterJSON(location.state.history) : [[], [], [], [], []])
 
     const [errorMessage, setErrorMessage] = useState('');
 
-    const [roles, setRoles] = useState([{ role_id: 4, name: "Customer", user_id: user.id, game_id: location.state.id, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false },
-
+    const [roles, setRoles] = useState([
+      { role_id: 4, name: "Customer", user_id: user.id, game_id: location.state.id, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false },
         { role_id: 0, name: "Retailer", user_id: user.id, game_id: location.state.id, inventory: -10, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false },
         { role_id: 1, name: "Wholesaler", user_id: user.id, game_id: location.state.id, inventory: -20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false },
         { role_id: 2, name: "Distributor", user_id: user.id, game_id: location.state.id, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false },
@@ -278,11 +278,11 @@ const Game = () => {
                 {!gameOver ? roles.map((role, index) => (
                     <Player player={role}
                         key={role.role_id}
-                        index={index}
+                        index={role.role_id}
                         currentPlayerIndex={currentPlayerIndex}
                         handleNextPlayer={handleNextPlayer}
                         handleOrder={handleOrder}
-                        history={history[index]}
+                        history={history[role.role_id]}
                         toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
                         name={index == selectedRole? user.first_name : `CPU ${index + 1}`} />
 
