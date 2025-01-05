@@ -17,7 +17,7 @@ const Game = () => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [rounds, setRounds] = useState(location.state?.rounds || 4);
   const [entropy, setEntropy] = useState(location.state?.entropy || 2);
-  const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
+  const [selectedRole, setSelectedRole] = useState(location.state?.role || 6);
   const [rolesHidden, setRolesHidden] = useState(location.state?.rolesHidden || true)
 
   // behavior objects stored in an array?
@@ -40,10 +40,10 @@ const Game = () => {
   const [roles, setRoles] = useState([
     { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
 
-    { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 10, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 10, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 10, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 10, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
   ]);
 
 
@@ -195,7 +195,7 @@ const Game = () => {
       const newInventory = role.inventory - role.received + role.fulfilled;
       //   let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
       let receivedAmount = role.received;
-      const newExpenses =role.expenses + (newInventory > 0 ? behaviors[role.role_id].cost.inventory : behaviors[role.role_id].cost.backlog) * Math.abs(newInventory);
+      const newExpenses =role.expenses + ((newInventory > 0 ? behaviors[role.role_id].cost.inventory : behaviors[role.role_id].cost.backlog) * Math.abs(newInventory));
       //const pendingReceived =
       const historyEntry = {
         round,
@@ -323,7 +323,7 @@ const Game = () => {
         onClose={() => { setErrorMessage(''); navigate('/login') }}
       />
 
-      <Dashboard round={round} name={user.first_name} role={roles[selectedRole].name} roundsRemaining={remainingRounds()} expenses={roles[selectedRole].expenses} gameOver={gameOver} />
+      <Dashboard round={round} name={user.first_name} role={roles[selectedRole]?.name || 'CPU'} roundsRemaining={remainingRounds()} expenses={roles[selectedRole]?.expenses || roles[1].expenses} gameOver={gameOver} />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 flex-wrap gap-8">
         {!gameOver ? roles.map((role) => (<Player player={role}
@@ -340,6 +340,7 @@ const Game = () => {
           roles.map((role) => (
             <div key={role.role_id} className="mt-4 w-full">
               <h4 className="text-lg font-semibold">{role.name} Rounds with Pending Shipments: {role.roundsPending}</h4>
+              <h4 className="text-lg font-semibold">{role.name} Total Expenses: {role.expenses}</h4>
             </div>
           ))
         )}
