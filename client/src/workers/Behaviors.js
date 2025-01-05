@@ -13,7 +13,11 @@ const defaultBehavior = ( rounds ) => {
             rounds: _rounds,
             orders: 8
         },
-        delay: 2
+        delay: 2,
+        cost: {
+            inventory: 0.25,
+            backlog: 0.50
+        }
     };
 }
 
@@ -38,7 +42,12 @@ const randomBehavior = ( rounds ) => {
             rounds: getRandomInt(_rounds),
             orders: getRandomInt(20)
         },
-        delay: getRandomInt(3)
+        delay: getRandomInt(3),
+
+        cost: {
+            inventory: 0.25,
+            backlog: 0.50
+        }
     };
     return behavior;
 }
