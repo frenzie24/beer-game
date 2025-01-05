@@ -70,19 +70,19 @@ const Game = () => {
   const [behaviors, setBehaviors] = useState(location.state?.behaviors || [retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior, customerBehavior]);
 
   const [gameOver, setGameOver] = useState(false);
-  const [user, setUser] = useState(location.state?.user || null);
+  const [user, setUser] = useState(location.state?.user || {first_name: 'Charles', id: 3});
 
-  const [history, setHistory] = useState(location.state.history ? splitFilterJSON(location.state.history) : [[], [], [], [], []])
+  const [history, setHistory] = useState(location.state?.history ? splitFilterJSON(location.state.history) : [[], [], [], [], []] || [[], [], [], [], []])
 
   const [errorMessage, setErrorMessage] = useState('');
 
   const [roles, setRoles] = useState([
 
-    { role_id: 0, name: "Retailer", user_id: user.id, game_id: location.state.id, inventory: -10, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false },
-    { role_id: 1, name: "Wholesaler", user_id: user.id, game_id: location.state.id, inventory: -20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false },
-    { role_id: 2, name: "Distributor", user_id: user.id, game_id: location.state.id, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false },
-    { role_id: 3, name: "Manufacturer", user_id: user.id, game_id: location.state.id, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false },
-    { role_id: 4, name: "Customer", user_id: user.id, game_id: location.state.id, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false },
+    { role_id: 0, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: -10, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false },
+    { role_id: 1, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: -20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false },
+    { role_id: 2, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false },
+    { role_id: 3, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false },
+    { role_id: 4, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 20, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false },
   ]);
   const [isLoading, setIsLoading] = useState(true);
 
