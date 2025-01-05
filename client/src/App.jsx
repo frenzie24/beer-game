@@ -15,12 +15,12 @@ const App = () => {
     <div className="w-screen h-screen bg-slate-900 text-slate-100">
       <Router>
         <Routes>
-          <Route path="/login" element={<GameSettings />} />
+          <Route path="/login" element={<Game />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/gamesettings" element={<GameSettings />} />
           <Route path="/game" element={<Game />} />
-          <Route path="/" element={<GameSettings />} />
+          <Route path="/" element={<Game />} />
         </Routes>
       </Router>
     </div>

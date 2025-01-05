@@ -16,7 +16,7 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
 
 
   return (
-    <div className="flex flex-col items-center border p-2 rounded-lg shadow-md bg-slate-800">
+    <div className="flex flex-col h-fit items-center border p-2 rounded-lg shadow-md bg-slate-800">
 
       <div className='flex flex-row flex-wrap justify-around'>
         <h2 className="text-2xl font-bold mb-4">{name}</h2>
@@ -34,6 +34,7 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
       />
 
       {/* Player History Section */}
+      {/*
       <div className="mt-4 w-full">
         <h4 className="text-lg font-semibold">{player.name} History</h4>
         <button
@@ -43,7 +44,7 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
           {player.isHistoryVisible ? 'Hide History' : 'Show History'}
         </button>
 
-        {/* History content - toggle visibility based on state */}
+        History content - toggle visibility based on state
         {player.isHistoryVisible && (
           <div className="mt-4">
             {history.length > 0 ? (
@@ -63,8 +64,9 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
             )}
           </div>
         )}
-      </div>
-    </div>
+
+    </div> */}
+    </div >
   )
 };
 

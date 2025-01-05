@@ -52,7 +52,7 @@ const GameSettings = ({ }) => {
         body: JSON.stringify(data),
       });
 
-      debugger;
+      debugger;/*
       if (response.ok) {
         debugger;
         const data = await response.json();
@@ -63,16 +63,18 @@ const GameSettings = ({ }) => {
         //
 
         // Redirect to profile page after successful login
-      }
+      }*/
       debugger;
-      if (response) {
+      if (response.ok) {
+       // debugger;
+        const data = await response.json();
+        console.log('GAME CREATED:', data);
+        localStorage.setItem('authToken', data.token); // Store the token
         debugger;
 
         localStorage.setItem('authToken', response.token); // Store the token
         navigate('/game', { state: { id: response.game.id, user: user, role: Number(role), rounds: rounds, entropy: entropy, players: response.players } });
-        //
 
-        // Redirect to profile page after successful login
       } else {
         const data = await response.json();
         debugger;
