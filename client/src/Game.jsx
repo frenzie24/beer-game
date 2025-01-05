@@ -15,7 +15,7 @@ const Game = () => {
   const location = useLocation();
   const [round, setRound] = useState(location.state?.round || 0);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-  const [rounds, setRounds] = useState(location.state?.rounds || 10);
+  const [rounds, setRounds] = useState(location.state?.rounds || 4);
   const [entropy, setEntropy] = useState(location.state?.entropy || 2);
   const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
 
@@ -80,25 +80,30 @@ const Game = () => {
     }
     if (nextPlayer) {
       nextPlayer.received = amount;
+      // nextPlayer has inventory get a shipmetn from them
       const inventory = nextPlayer.inventory;
       if (inventory > 0) {
         player.fulfilled = inventory - amount > 0 ? amount : inventory;
+        debugger;
       } else {
-        player.fulfilled = 0;
+        // if the nextPlayer's inventory is negative, still get a fulfillment pulled nextPlayer's lastFulfilled
+        // this should handle fulfilling backlogs?
+        player.fulfilled = nextPlayer.lastFulfilled;
       }
     } else {
+      // manufacturers just produce their behavior orders
       player.fulfilled = behaviors[idx].phase1.orders;
     }
 
     const newPlayers = players.map(entry => {
-      if (prevPlayer?.role_id === entry.role_id)  return prevPlayer;
-      else if (nextPlayer?.rold_id === entry.role_id)  return nextPlayer;
+      if (prevPlayer?.role_id === entry.role_id) return prevPlayer;
+      else if (nextPlayer?.rold_id === entry.role_id) return nextPlayer;
       else if (player?.role_id === entry.rold_id) return player;
       else return entry;
 
     })
 
- //   debugJSON([player, prevPlayer? prevPlayer : '', nextPlayer ? nextPlayer : '']);
+    //   debugJSON([player, prevPlayer? prevPlayer : '', nextPlayer ? nextPlayer : '']);
 
     return newPlayers;
 
@@ -181,22 +186,22 @@ const Game = () => {
     let newHistory = history;
     const updatedRoles = roles.map((role, idx) => {
       console.log(`Handling shipments for ${role.name}`);
-      if (role.pendingReceived > 0) role.roundsPending++;
+      if (role.inventory < 0) role.roundsPending++;
       // const fulfilled =
       debugJSON(role)
-      const newInventory = role.inventory - role.received;
-   //   let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
+      const newInventory = role.inventory - role.received + role.fulfilled;
+      //   let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
       let receivedAmount = role.received;
-
+      //const pendingReceived =
       const historyEntry = {
         round,
         ordered: role.ordered,
         received: receivedAmount,
         fulfilled: role.fulfilled,
         lastFulfilled: role.lastFulfilled,
-       pendingReceived: role.pendingReceived+role.received,
+        pendingReceived: role.pendingReceived + role.received,
         totalReceived: role.totalReceived,
-      //  pendingReceived: pending,
+        //  pendingReceived: pending,
         inventory: newInventory,
       };
 
@@ -214,7 +219,7 @@ const Game = () => {
         lastOrder: role.ordered,
         received: receivedAmount,
         totalReceived: role.totalReceived + receivedAmount,
-      //  pendingReceived: pending,
+        //  pendingReceived: pending,
         //  history: `${role.history},${historyEntry}`
       };
     });
@@ -228,17 +233,18 @@ const Game = () => {
     setHistory(newHistory);
     console.log(`Finished shipments for round: ${round}`);
 
-    if (round !== rounds) {
+    if (round < rounds-1) {
       const newRound = Number(round + 1);
 
       setRound(newRound);
+      console.log(`Resetting current player`);
+
+      setCurrentPlayerIndex(0); // Reset to the first player for the next round
     } else {
       setGameOver(true);
       return;
     }
-    console.log(`Resetting current player`);
 
-    setCurrentPlayerIndex(0); // Reset to the first player for the next round
   };
 
   const handleNextPlayer = () => {
@@ -278,6 +284,9 @@ const Game = () => {
     setRoles(updatedRoles);
   };
 
+  useEffect(()=>{
+    console.log('game over')
+  },[gameOver])
 
   useEffect(() => {
     console.log(`Loading: ${isLoading ? 'in progress' : 'complete'}`)
@@ -303,14 +312,14 @@ const Game = () => {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 flex-wrap gap-8">
         {!gameOver ? roles.map((role) => (<Player player={role}
-            key={role.role_id}
-            index={role.role_id}
-            currentPlayerIndex={currentPlayerIndex}
-            handleNextPlayer={handleNextPlayer}
-            handleOrder={handleOrder}
-            history={history[role.role_id]}
-            toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
-            name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`} />
+          key={role.role_id}
+          index={role.role_id}
+          currentPlayerIndex={currentPlayerIndex}
+          handleNextPlayer={handleNextPlayer}
+          handleOrder={handleOrder}
+          history={history[role.role_id]}
+          toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
+          name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`} />
 
         )) : (
           roles.map((role) => (
