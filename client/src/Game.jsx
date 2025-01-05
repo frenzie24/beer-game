@@ -28,7 +28,7 @@ const Game = () => {
   const [distributionerBehavior, setDistributionerBehavior] = useState(location.state?.distributionerBehavior || defaultBehavior);
   const [manufacturerBehavior, setManufacturerBehavior] = useState(location.state?.manufacturerBehavior || defaultBehavior);
 
-  const [behaviors, setBehaviors] = useState(location.state?.behaviors || [customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior ]);
+  const [behaviors, setBehaviors] = useState(location.state?.behaviors || [customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior]);
 
   const [gameOver, setGameOver] = useState(false);
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
@@ -57,7 +57,10 @@ const Game = () => {
   useEffect(() => {
     console.log(`Starting ${roles[currentPlayerIndex].name}s' turn`)
     if (roles[currentPlayerIndex].role_id !== selectedRole) { // Random npcDelay between 500ms and 1500ms
+
+
       setTimeout(() => handleOrderForNonActiveRoles(currentPlayerIndex), npcDelay);
+
     }
 
     // if (!location.state?.user) navigate('/login')
@@ -77,25 +80,27 @@ const Game = () => {
     // force prevPlayer $ nextplayer to be null if we try to access an undefined player
     const prevPlayer = idx == 0 ? null : players[idx - 1];
     const nextPlayer = idx >= players.length - 1 ? null : players[idx + 1];
+    if (round == 0 && player.role_id == 0) { } else {
 
-    if (prevPlayer) {
-      //player.received = prevPlayer.ordered;
-    }
-    if (nextPlayer) {
-      nextPlayer.received = amount;
-      // nextPlayer has inventory get a shipmetn from them
-      const inventory = nextPlayer.inventory;
-      if (inventory > 0) {
-        player.fulfilled = inventory - amount > 0 ? amount : inventory;
-        debugger;
-      } else {
-        // if the nextPlayer's inventory is negative, still get a fulfillment pulled nextPlayer's lastFulfilled
-        // this should handle fulfilling backlogs?
-        player.fulfilled = nextPlayer.lastFulfilled;
+      if (prevPlayer) {
+        //player.received = prevPlayer.ordered;
       }
-    } else {
-      // manufacturers just produce their behavior orders
-      player.fulfilled = behaviors[idx].phase1.orders;
+      if (nextPlayer) {
+        nextPlayer.received = amount;
+        // nextPlayer has inventory get a shipmetn from them
+        const inventory = nextPlayer.inventory;
+        if (inventory > 0) {
+          player.fulfilled = inventory - amount > 0 ? amount : inventory;
+          debugger;
+        } else {
+          // if the nextPlayer's inventory is negative, still get a fulfillment pulled nextPlayer's lastFulfilled
+          // this should handle fulfilling backlogs?
+          player.fulfilled = nextPlayer.lastFulfilled;
+        }
+      } else {
+        // manufacturers just produce their behavior orders
+        player.fulfilled = behaviors[idx].phase1.orders;
+      }
     }
 
     const newPlayers = players.map(entry => {
@@ -195,7 +200,7 @@ const Game = () => {
       const newInventory = role.inventory - role.received + role.fulfilled;
       //   let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
       let receivedAmount = role.received;
-      const newExpenses =role.expenses + ((newInventory > 0 ? behaviors[role.role_id].cost.inventory : behaviors[role.role_id].cost.backlog) * Math.abs(newInventory));
+      const newExpenses = role.expenses + ((newInventory > 0 ? behaviors[role.role_id].cost.inventory : behaviors[role.role_id].cost.backlog) * Math.abs(newInventory));
       //const pendingReceived =
       const historyEntry = {
         round,
@@ -345,7 +350,7 @@ const Game = () => {
           ))
         )}
       </div>
-      <button onClick={()=>{setSelectedRole(selectedRole != 6? 6 : 1)}}>AUTOPLAY</button>
+      <button onClick={() => { setSelectedRole(selectedRole != 6 ? 6 : 1) }}>AUTOPLAY</button>
     </div>
   );
 };
