@@ -64,7 +64,7 @@ const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, }) => {
     <div className={classString}>
       <h3 className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_80%)] text-3xl text-center font-bold text-shadow-90 rounded-lg w-full p-2">{role.name}</h3>
       <div className='w-full'>
-        <Table
+        {role.isHidden ? <></> : <Table
           headers={['Status', 'Value']}
           data={
             [
@@ -76,7 +76,7 @@ const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, }) => {
 
             ]
           }
-        />
+        />}
       </div>
       <input
         type="number"
