@@ -17,7 +17,7 @@ const Game = () => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [rounds, setRounds] = useState(location.state?.rounds || 4);
   const [entropy, setEntropy] = useState(location.state?.entropy || 2);
-  const [selectedRole, setSelectedRole] = useState(location.state?.role || 6);
+  const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
   const [rolesHidden, setRolesHidden] = useState(location.state?.rolesHidden || true)
 
   // behavior objects stored in an array?
@@ -345,6 +345,7 @@ const Game = () => {
           ))
         )}
       </div>
+      <button onClick={()=>{setSelectedRole(selectedRole != 6? 6 : 1)}}>AUTOPLAY</button>
     </div>
   );
 };
