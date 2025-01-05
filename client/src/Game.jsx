@@ -277,7 +277,7 @@ const Game = () => {
     }
   }
 
-  const remainingRounds = () => rounds - round;
+  const remainingRounds = () => rounds - round-1;
 
 
   // Function to toggle the visibility of the history section
