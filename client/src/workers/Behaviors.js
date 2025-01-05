@@ -1,6 +1,6 @@
 const defaultRounds = 10;
 
-const defaultBehavior = ({ rounds = defaultRounds }) => {
+const defaultBehavior = ( rounds = defaultRounds ) => {
     return {
         name: 'default',
         phase1: {
@@ -15,7 +15,7 @@ const defaultBehavior = ({ rounds = defaultRounds }) => {
     };
 }
 
-const randomBehavior = ({ rounds = defaultRounds }) => {
+const randomBehavior = ( rounds = defaultRounds ) => {
     const getRandomInt = (max, mod = 1) => {
         const rand = Math.floor(Math.random() * max * mod) + 1;
         return rand;
@@ -40,7 +40,7 @@ const randomBehavior = ({ rounds = defaultRounds }) => {
     return behavior;
 }
 
-const lowToHighBehavior = ({ rounds = defaultRounds }) => {
+const lowToHighBehavior = ( rounds = defaultRounds) => {
     return {
         name: 'Increase Orders Over Time ',
         phase1: {

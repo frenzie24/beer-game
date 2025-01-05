@@ -1,18 +1,49 @@
 // src/components/PlayerRole.js
 import React, { useState } from 'react';
 import Table from './Table';
+import { roleBgColors } from '../workers/GameConsts';
 
-const PlayerRole = ({ role, inventory, received, onOrder, isActive, onNextPlayer, isDisabled,  }) => {
+// should we store role behavior in player role view and bubble up?
+/*
+  We don't need to track received, remove or hide?
+  - keep for debugging!
 
+  - if were just trakcing inventory state we shouldnt need it for debugging
+*/
+//TDO: move everything we are tracking to passed role obj
+const PlayerRole = ({ role, received, onOrder, isActive, onNextPlayer, isDisabled, }) => {
+debugger;
+  // instead of pending received we track pending orders for the user
   const [ordered, setOrdered] = useState(role.ordered)
+  const [pendingOrders, setPendingOrdered] = useState(role?.pendingOrders || 0);
+  const [inventory, setInventory] = useState(role?.inventory || 0);
 
-  const bgcolors = ['bg-sky-500', 'bg-indigo-700', 'bg-orange-500', 'bg-red-700']
-  const classString = `${bgcolors[role.role_id]} p-2 flex flex-row flex-wrap justify-center`;
+
+  // gets role bg color by role id: [reailer, wholesaler, distributioner, manufacturer, customer]
+  const classString = `${roleBgColors[role.role_id]} p-2 flex flex-row flex-wrap justify-center`;
+
+  const getInventoryLabel= () => {
+    return inventory >= 0 ? 'Inventory' : 'Backlog'
+  }
+
   const handleOrderChange = (e) => {
     e.preventDefault();
+
+    //pending orders will always start at their currernt pending orders + ordered
+    const newPending = pendingOrders + ordered;
+    setPendingOrdered(newPending);
     setOrdered(parseInt(e.target.value) || 0);
 
   };
+
+
+  const handleReceived = () => {
+    const newReceived = 0;
+  }
+
+  const handleShipment = () => {
+
+  }
 
   const handleOrderSubmit = (e) => {
     e.preventDefault();
@@ -31,14 +62,11 @@ const PlayerRole = ({ role, inventory, received, onOrder, isActive, onNextPlayer
           headers={['Status', 'Value']}
           data={
             [
-              ['Inventory', inventory],
-              ['Received This Turn', received],
-              ['Received Pending', role.pendingReceived],
-              ['Ordered This Turn', role.ordered],
-              ['Fulfilled', role.fulfilled,],
-              ['Last Ordered', role.lastOrder],
+              [getInventoryLabel(), inventory],
+              ['Pending Orders', pendingOrders],
+              ['Ordered This Week ', role.ordered],
 
-              ['Last Fulfilled', role.lastFulfilled],
+              ['Last Ordered', role.lastOrder]
 
             ]
           }
@@ -46,7 +74,7 @@ const PlayerRole = ({ role, inventory, received, onOrder, isActive, onNextPlayer
       </div>
       <input
         type="number"
-        value={role.ordered ?role.ordered : ordered}
+        value={role.ordered ? role.ordered : ordered}
         onChange={handleOrderChange}
         onSubmit={handleOrderSubmit}
         disabled={!isActive || isDisabled} // Disable if not the active player

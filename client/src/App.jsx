@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login';  // Import Login component
 import Registration from './Registration';  // Import Registration component
 import Profile from './Profile';  // Import UserProfile component
-import Game from "./_Game";
+import Game from "./Game";
 import GameSettings from './GameSettings';
 
 import Behavior from './Behavior';
