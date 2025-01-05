@@ -11,11 +11,13 @@ import { roleBgColors } from '../workers/GameController';
   - if were just trakcing inventory state we shouldnt need it for debugging
 */
 //TDO: move everything we are tracking to passed role obj
-const PlayerRole = ({ role, received, onOrder, isActive, onNextPlayer, isDisabled, }) => {
+const PlayerRole = ({ role,  onOrder, isActive, onNextPlayer, isDisabled, }) => {
 
   // instead of pending received we track pending orders for the user
   const [ordered, setOrdered] = useState(role.ordered)
-  const [pendingOrders, setPendingOrdered] = useState(role?.pendingOrders || 0);
+  const [pendingOrders, setPendingOrders] = useState(role?.pendingOrders || 0);
+  const [received, setReceived] = useState(role?.received || 0);
+  const [pendingReceived, setPendingReceived] = useState(role?.pendingReceived || 0);
   const [inventory, setInventory] = useState(role?.inventory || 0);
 
 
@@ -31,7 +33,7 @@ const PlayerRole = ({ role, received, onOrder, isActive, onNextPlayer, isDisable
 
     //pending orders will always start at their currernt pending orders + ordered
     const newPending = pendingOrders + ordered;
-    setPendingOrdered(newPending);
+    setPendingOrders(newPending);
     setOrdered(parseInt(e.target.value) || 0);
 
   };
@@ -63,7 +65,7 @@ const PlayerRole = ({ role, received, onOrder, isActive, onNextPlayer, isDisable
           data={
             [
               [getInventoryLabel(), inventory],
-              ['Pending Orders', pendingOrders],
+              ['Received Orders', received],
               ['Ordered This Week ', role.ordered],
 
               ['Last Ordered', role.lastOrder]
