@@ -127,8 +127,10 @@ const Game = () => {
 
 
                 // call randomOrders()
+                const orderAmount = behaviors[index];
                 const randomOrderAmount = randomOrders(entropy) * index;
-                entry.ordered = randomOrderAmount;
+                entry.ordered = orderAmount;
+             //   entry.ordered = randomOrderAmount;
                 if (entry.pendingReceived > 0) {
                     entry.ordered += Math.floor(entry.pendingReceived);
                 }
