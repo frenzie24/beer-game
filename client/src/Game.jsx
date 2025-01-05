@@ -284,7 +284,7 @@ const Game = () => {
                         handleOrder={handleOrder}
                         history={history[role.role_id]}
                         toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
-                        name={index == selectedRole? user.first_name : `CPU ${index + 1}`} />
+                        name={role.role_id == selectedRole? user.first_name : `CPU ${index + 1}`} />
 
                 )) : (
                     roles.map((role, index) => (
