@@ -84,19 +84,21 @@ const Game = () => {
       if (inventory > 0) {
         player.fulfilled = inventory - amount > 0 ? amount : inventory;
       } else {
-        players.fulfilled = 0;
+        player.fulfilled = 0;
       }
     } else {
       player.fulfilled = behaviors[idx].phase1.orders;
     }
 
     const newPlayers = players.map(entry => {
-      if (prevPlayer?.role_id === entry.role_id) { return prevPlayer }
-      else if (nextPlayer?.rold_id === entry.role_id) { return nextPlayer }
+      if (prevPlayer?.role_id === entry.role_id)  return prevPlayer;
+      else if (nextPlayer?.rold_id === entry.role_id)  return nextPlayer;
       else if (player?.role_id === entry.rold_id) return player;
-      return entry;
+      else return entry;
 
     })
+
+ //   debugJSON([player, prevPlayer? prevPlayer : '', nextPlayer ? nextPlayer : '']);
 
     return newPlayers;
 
@@ -144,11 +146,12 @@ const Game = () => {
       }
       return entry;
     });
-    setRoles(updatedRoles);
+    //setRoles(updatedRoles);
 
 
     setTimeout(() => {
-      setRoles(checkFulfillment(index, updatedRoles, updatedRoles[index].ordered));
+      const newRoles = checkFulfillment(index, updatedRoles, updatedRoles[index].ordered);
+      setRoles(newRoles);
       handleNextPlayer();
     }, 1500)
   };
@@ -159,7 +162,8 @@ const Game = () => {
 
     // logic to handle whether the next player can fill the order entirely or not
     setTimeout(() => {
-      setRoles(checkFulfillment(id, updatedRoles, amount));
+      const newRoles = checkFulfillment(id, updatedRoles, amount)
+      setRoles(newRoles);
       handleNextPlayer();
     }, 500)
 
@@ -179,17 +183,18 @@ const Game = () => {
       console.log(`Handling shipments for ${role.name}`);
       if (role.pendingReceived > 0) role.roundsPending++;
       // const fulfilled =
+      debugJSON(role)
       const newInventory = role.inventory - role.received;
-      let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
+   //   let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
       let receivedAmount = role.received;
 
       const historyEntry = {
         round,
         ordered: role.ordered,
-        received: role.received,
+        received: receivedAmount,
         fulfilled: role.fulfilled,
         lastFulfilled: role.lastFulfilled,
-       pendingReceived: role.pendingReceived,
+       pendingReceived: role.pendingReceived+role.received,
         totalReceived: role.totalReceived,
       //  pendingReceived: pending,
         inventory: newInventory,
@@ -297,9 +302,7 @@ const Game = () => {
       <Dashboard round={round} name={user.first_name} role={roles[selectedRole].name} roundsRemaining={remainingRounds()} />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 flex-wrap gap-8">
-        {!gameOver ? roles.map((role) => (
-
-          <Player player={role}
+        {!gameOver ? roles.map((role) => (<Player player={role}
             key={role.role_id}
             index={role.role_id}
             currentPlayerIndex={currentPlayerIndex}

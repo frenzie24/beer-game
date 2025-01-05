@@ -64,8 +64,8 @@ const PlayerRole = ({ role,  onOrder, isActive, onNextPlayer, isDisabled, }) => 
           headers={['Status', 'Value']}
           data={
             [
-              [getInventoryLabel(), inventory],
-              ['Received Orders', received],
+              [getInventoryLabel(), role.inventory],
+              ['Received Orders', role.received],
               ['Ordered This Week ', role.ordered],
 
               ['Last Ordered', role.lastOrder]
