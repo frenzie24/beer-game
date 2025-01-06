@@ -51,9 +51,9 @@ const Game = () => {
     { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
 
     { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
   ]);
 
   // when loading print state values
@@ -88,35 +88,33 @@ const Game = () => {
     // force prevPlayer $ nextplayer to be null if we try to access an undefined player
     const prevPlayer = idx == 0 ? null : players[idx - 1];
     const nextPlayer = idx >= players.length - 1 ? null : players[idx + 1];
-    if (round == 0 && player.role_id == 0) { } else {
 
-
-      if (nextPlayer) {
-        nextPlayer.received = amount;
-        // nextPlayer has inventory get a shipmetn from them
-        const inventory = nextPlayer.inventory;
-        if (inventory > 0) {
-          player.fulfilled = inventory - amount > 0 ? amount : inventory;
-          debugger;
-        } else {
-          // if the nextPlayer's inventory is negative, still get a fulfillment pulled nextPlayer's lastFulfilled
-          // this should handle fulfilling backlogs?
-          player.fulfilled = nextPlayer.lastFulfilled;
-        }
+    if (nextPlayer) {
+      nextPlayer.received = amount;
+      // nextPlayer has inventory get a shipmetn from them
+      const inventory = nextPlayer.inventory;
+      if (inventory > 0) {
+        player.fulfilled = inventory - amount > 0 ? amount : inventory;
+        debugger;
       } else {
-        // manufacturers just produce their behavior orders
-        player.fulfilled = behaviors[idx].phase1.orders;
+        // if the nextPlayer's inventory is negative, still get a fulfillment pulled nextPlayer's lastFulfilled
+        // this should handle fulfilling backlogs?
+        player.fulfilled = nextPlayer.lastFulfilled;
       }
-/*
-      if (prevPlayer) {
-        // attempts to fill previous role's pending orders
-        if (player.inventory < 0) {
-          prevPlayer.fulfilled = player.fulfilled;
-        }
-      }
-        */
+    } else {
+      // manufacturers just produce their behavior orders
+      player.fulfilled = behaviors[idx].phase1.orders;
     }
+    /*
+          if (prevPlayer) {
+            // attempts to fill previous role's pending orders
+            if (player.inventory < 0) {
+              prevPlayer.fulfilled = player.fulfilled;
+            }
+          }
+            */
 
+    player.inventory -= player.received;
     const newPlayers = players.map(entry => {
       if (prevPlayer?.role_id === entry.role_id) return prevPlayer;
       else if (nextPlayer?.rold_id === entry.role_id) return nextPlayer;
@@ -185,7 +183,7 @@ const Game = () => {
       if (role.inventory < 0) role.roundsPending++;
       // const fulfilled =
 
-      const newInventory = role.inventory - role.received + role.fulfilled;
+      const newInventory = role.inventory + role.fulfilled;
       //   let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
       let receivedAmount = role.received;
       const newExpenses = role.expenses + ((newInventory > 0 ? behaviors[role.role_id].cost.inventory : behaviors[role.role_id].cost.backlog) * Math.abs(newInventory));
@@ -263,7 +261,7 @@ const Game = () => {
   }
 
   const onRestartClick = () => {
-
+    location.reload();
   }
 
   const onRevealDetailsClick = () => {
@@ -365,7 +363,7 @@ const Game = () => {
               name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
               detailsHidden={false}
               godMode={godMode}
-              />);
+            />);
 
           } else {
             return (<Player player={role}
@@ -378,7 +376,7 @@ const Game = () => {
               toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
               name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
               detailsHidden={hideDetails}
-              godMode={godMode}/>
+              godMode={godMode} />
 
             )
           }
