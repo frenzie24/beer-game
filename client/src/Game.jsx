@@ -30,7 +30,7 @@ const Game = () => {
   const [rounds, setRounds] = useState(location.state?.rounds || 4);
   const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
   //does location.state exsist? then autoRole is the role stored in the game's nav. If no does selectedRole exist? then set to selectedRole other wise 1
-  const autoRole = location.state?.role || selectedRole ? selectedRole : 1;
+  const autoRole = location.state?.role || 1;
 
   // behavior objects stored in an array?
   // get behaviors from passed settings or use default behaviors if undefined
