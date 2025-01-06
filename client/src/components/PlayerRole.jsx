@@ -15,10 +15,16 @@ import { roleBgColors } from '../workers/GameController';
 //converts passed object to
 const convertJSONToArray = (data) => {
   const result = [];
+
+  const badFields = ['history', 'isHistoryVisible', 'isHidden', 'user_id', 'game_id']
+
+  // take each key value pair and convert to array {2D array is result}
   for (var d in data)
     result.push([d, data[d]]);
-  debugger;
-  return result.filter(entry=>entry[0]!='history');
+
+  //remove array entryies we dont care about
+  const newResult = result.filter(entry => !badFields.includes(entry[0]))
+  return newResult;
 }
 const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, detailsHidden, godMode }) => {
 
