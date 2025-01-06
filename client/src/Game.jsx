@@ -89,9 +89,7 @@ const Game = () => {
     const nextPlayer = idx >= players.length - 1 ? null : players[idx + 1];
     if (round == 0 && player.role_id == 0) { } else {
 
-      if (prevPlayer) {
-        //player.received = prevPlayer.ordered;
-      }
+
       if (nextPlayer) {
         nextPlayer.received = amount;
         // nextPlayer has inventory get a shipmetn from them
@@ -107,6 +105,13 @@ const Game = () => {
       } else {
         // manufacturers just produce their behavior orders
         player.fulfilled = behaviors[idx].phase1.orders;
+      }
+
+      if (prevPlayer) {
+        // attempts to fill previous role's pending orders
+        if (player.inventory < 0) {
+            prevPlayer.fulfilled = player.fulfilled;
+        }
       }
     }
 
@@ -179,7 +184,7 @@ const Game = () => {
       console.log(`Handling shipments for ${role.name}`);
       if (role.inventory < 0) role.roundsPending++;
       // const fulfilled =
-      debugJSON(role)
+
       const newInventory = role.inventory - role.received + role.fulfilled;
       //   let pending = newInventory < 0 ? Math.abs(newInventory) : 0;
       let receivedAmount = role.received;
@@ -197,6 +202,7 @@ const Game = () => {
         //  pendingReceived: pending,
         inventory: newInventory,
       };
+      debugJSON(historyEntry)
 
       // instead of parsing the different player history arrays, we just add historyEntry to the history we have stored in state before we update the server with a new game state
       //            newHistory[idx].push(addToGameHistory(historyEntry, idx);
@@ -376,7 +382,7 @@ const Game = () => {
         }
       </div>
       {debugMode ?
-        <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={onRestartClick} onRevealDetailsClick={onRevealDetailsClick} /> : <></>}
+        <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={onRestartClick} onRevealDetailsClick={onRevealDetailsClick} rounds={rounds} setRounds={setRounds} /> : <></>}
 
     </div>
   );
