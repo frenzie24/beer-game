@@ -42,6 +42,7 @@ const Behavior = ({ name = 'custom', rounds, onSubmit, onCancel }) => {
         }
     */
     // handles submit and bubbles up phase1-3 data
+
     const handleSubmit = (e) => {
         debugger;
         e.preventDefault();

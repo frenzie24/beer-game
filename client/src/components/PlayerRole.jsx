@@ -11,12 +11,27 @@ import { roleBgColors } from '../workers/GameController';
   - if were just trakcing inventory state we shouldnt need it for debugging
 */
 //TDO: move everything we are tracking to passed role obj
-const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, }) => {
+
+//converts passed object to
+const convertJSONToArray = (data) => {
+  const result = [];
+
+  const badFields = ['history', 'isHistoryVisible', 'isHidden', 'user_id', 'game_id']
+
+  // take each key value pair and convert to array {2D array is result}
+  for (var d in data)
+    result.push([d, data[d]]);
+
+  //remove array entryies we dont care about
+  const newResult = result.filter(entry => !badFields.includes(entry[0]))
+  return newResult;
+}
+const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, detailsHidden, godMode }) => {
 
   // instead of pending received we track pending orders for the user
 
   const [ordered, setOrdered] = useState(role.ordered)
-
+  const roleData = convertJSONToArray(role);
   const [pendingOrders, setPendingOrders] = useState(role?.pendingOrders || 0);
   /*
   const [received, setReceived] = useState(role?.received || 0);
@@ -63,21 +78,26 @@ const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, }) => {
   return (
     <div className={classString}>
       <h3 className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_80%)] text-3xl text-center font-bold text-shadow-90 rounded-lg w-full p-2">{role.name}</h3>
-      <div className='w-full'>
-        {role.isHidden ? <></> : <Table
-          headers={['Status', 'Value']}
-          data={
-            [
-              [getInventoryLabel(), role.inventory],
-              ['Received Orders', role.received],
-              ['Ordered This Week ', role.ordered],
+      {detailsHidden ? <></> :
+        <div className='w-full'>
+          {(godMode == true) ?
+            <Table
+              headers={['Status', 'Value']}
+              data={roleData}
+            /> : <Table
+              headers={['Status', 'Value']}
+              data={
+                [
+                  [getInventoryLabel(), role.inventory],
+                  ['Received Orders', role.received],
+                  ['Ordered This Week ', role.ordered],
 
-              ['Last Ordered', role.lastOrder]
+                  ['Last Ordered', role.lastOrder]
 
-            ]
-          }
-        />}
-      </div>
+                ]
+              }
+            />}
+        </div>}
       <input
         type="number"
         value={role.ordered ? role.ordered : ordered}
