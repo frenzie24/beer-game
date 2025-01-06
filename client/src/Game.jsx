@@ -24,7 +24,7 @@ const Game = () => {
   const [godMode, setGodMode] = useState(false);
 
   // ints
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(1);
   const [entropy, setEntropy] = useState(location.state?.entropy || 2);
   const [round, setRound] = useState(location.state?.round || 0);
   const [rounds, setRounds] = useState(location.state?.rounds || 4);
@@ -107,13 +107,14 @@ const Game = () => {
         // manufacturers just produce their behavior orders
         player.fulfilled = behaviors[idx].phase1.orders;
       }
-
+/*
       if (prevPlayer) {
         // attempts to fill previous role's pending orders
         if (player.inventory < 0) {
           prevPlayer.fulfilled = player.fulfilled;
         }
       }
+        */
     }
 
     const newPlayers = players.map(entry => {
@@ -134,8 +135,6 @@ const Game = () => {
   const handleOrderForNonActiveRoles = (index) => {
     const updatedRoles = roles.map((entry, idx) => {
       if (idx === index) {
-
-
         // call randomOrders()
         const orderAmount = behaviors[index].phase1.orders;
 
