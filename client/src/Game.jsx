@@ -20,6 +20,7 @@ const Game = () => {
   const [rolesHidden, setRolesHidden] = useState(location.state?.rolesHidden || true)
   const [gameOver, setGameOver] = useState(false);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
+  const [debugMode, setDebugMode] = useState(false);
 
   // ints
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -351,8 +352,9 @@ const Game = () => {
           ))
         )}
       </div>
-      <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={() => { }} onRevealDetailsClick={() => { }} />
-      <button onClick={onAutoPlayClick}>AUTOPLAY</button>
+      {debugMode ?
+        <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={() => { }} onRevealDetailsClick={() => { }} /> : <></>}
+
     </div>
   );
 };
