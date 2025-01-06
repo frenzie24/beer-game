@@ -48,9 +48,9 @@ const Game = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const [roles, setRoles] = useState([
-    { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: parseFloat(0.0) },
 
-    { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses:parseFloat(0.0)  },
     { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
     { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
     { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
@@ -95,7 +95,7 @@ const Game = () => {
       const inventory = nextPlayer.inventory;
       if (inventory > 0) {
         player.fulfilled = inventory - amount > 0 ? amount : inventory;
-        debugger;
+
       } else {
         // if the nextPlayer's inventory is negative, still get a fulfillment pulled nextPlayer's lastFulfilled
         // this should handle fulfilling backlogs?
@@ -226,7 +226,7 @@ const Game = () => {
     const data = { game: { round, rounds, selectedRole, entropy, history: newHistory.join('|'), id: location.state?.id }, players: updatedRoles, }
 
     // await updateServer({ ...data });
-    debugger;
+
     setRoles(updatedRoles);
     setHistory(newHistory);
     console.log(`Finished shipments for round: ${round}`);
@@ -303,7 +303,7 @@ const Game = () => {
     }
   }
 
-  const remainingRounds = () => rounds - round - 1;
+  const remainingRounds = () => { return rounds - round - 1 };
 
 
   // Function to toggle the visibility of the history section
