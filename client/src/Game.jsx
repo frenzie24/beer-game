@@ -6,6 +6,7 @@ import Connection from './workers/Conncetion';
 import Dashboard from './components/Dashboard';
 import { defaultBehavior } from './workers/Behaviors';
 import { delim, arrayDelim, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from './workers/GameController';
+import DebugPanel from './components/DebugPanel';
 
 
 // game must nav from gamesettings to get data required
@@ -13,13 +14,20 @@ const Game = () => {
 
   const navigate = useNavigate(); // Use useNavigate for React Router navigation
   const location = useLocation();
+
+  // bools
+  const [isLoading, setIsLoading] = useState(true);
+  const [rolesHidden, setRolesHidden] = useState(location.state?.rolesHidden || true)
+  const [gameOver, setGameOver] = useState(false);
+  const [isAutoPlay, setIsAutoPlay] = useState(false);
+
   const [round, setRound] = useState(location.state?.round || 0);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [rounds, setRounds] = useState(location.state?.rounds || 4);
   const [entropy, setEntropy] = useState(location.state?.entropy || 2);
   const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
-  const [rolesHidden, setRolesHidden] = useState(location.state?.rolesHidden || true)
-
+  //does location.state exsist? then autoRole is the role stored in the game's nav. If no does selectedRole exist? then set to selectedRole other wise 1
+  const autoRole = location.state?.role || selectedRole ? selectedRole : 1;
   // behavior objects stored in an array?
   // get behaviors from passed settings or use default behaviors if undefined
   const [customerBehavior, setCustomerBehavior] = useState(location.state?.customerBehavior || defaultBehavior);
@@ -30,7 +38,6 @@ const Game = () => {
 
   const [behaviors, setBehaviors] = useState(location.state?.behaviors || [customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior]);
 
-  const [gameOver, setGameOver] = useState(false);
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
 
   const [history, setHistory] = useState(location.state?.history ? splitFilterJSON(location.state?.history) : [[], [], [], [], []] || [[], [], [], [], []])
@@ -46,8 +53,6 @@ const Game = () => {
     { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
   ]);
 
-
-  const [isLoading, setIsLoading] = useState(true);
 
   if (isLoading) {
     debugJSON({ rounds, round, currentPlayerIndex, selectedRole, behaviors, gameOver, user, history, errorMessage, roles });
@@ -115,30 +120,6 @@ const Game = () => {
 
     return newPlayers;
 
-
-    if (idx >= 0) {
-      players[idx].lastFulfilled = players[idx].fulfilled;
-      if (idx === 0) {
-        players[idx].received = behaviors[idx].phase1.orders; //
-      }
-
-      if (idx < players.length - 1) {
-
-        // check the next player's inventory for fulfullment and set next player's received to current player's order
-        players[idx + 1].received = amount;// + randomOrders(entropy);
-        if (players[idx + 1].inventory < amount) {
-          players[idx].fulfilled = players[idx + 1].inventory;
-        } else {
-          players[idx].fulfilled = amount;
-        }
-      } else {
-        // the manufacturer gets random fulfillment which can suck lol
-        players[idx].fulfilled = behaviors[idx].phase1.orders;
-      }
-      players[idx].ordered = amount;
-    }
-
-    return players;
   }
 
 
@@ -258,6 +239,25 @@ const Game = () => {
 
   };
 
+  // Handle replacing the user with a cpu and vice versa
+  const onAutoPlayClick = () => {
+    const playing = !isAutoPlay;
+    setIsAutoPlay(playing);
+
+    //if turned on during user's turn, place an order according to behavior
+    if(currentPlayerIndex == selectedRole) {
+      handleOrder(selectedRole, behaviors[selectedRole].phase1.orders);
+    }
+    // if the selected role is not 6 (DNE), set to 6 otherwise the value stoerd in autoRole;
+    setSelectedRole(selectedRole != 6 ? 6 : autoRole);
+
+    return playing;
+  }
+
+  const onRestartClick = () => {
+
+  }
+
   const handleNextPlayer = () => {
     //next turn in week
     console.log(`Ending ${roles[currentPlayerIndex].name}s' turn.`)
@@ -350,7 +350,8 @@ const Game = () => {
           ))
         )}
       </div>
-      <button onClick={() => { setSelectedRole(selectedRole != 6 ? 6 : 1) }}>AUTOPLAY</button>
+      <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={() => { }} onRevealDetailsClick={() => { }} />
+      <button onClick={onAutoPlayClick}>AUTOPLAY</button>
     </div>
   );
 };
