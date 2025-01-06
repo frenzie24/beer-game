@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PlayerRole from './PlayerRole';
 
-const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, handleOrder, toggleHistoryVisibility, name, detailsHidden }) => {
+const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, handleOrder, toggleHistoryVisibility, name, detailsHidden, godMode }) => {
   const [orderAmount, setOrderAmount] = useState(0);
 
   const handleOrderChange = (e) => {
@@ -32,6 +32,7 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
         onNextPlayer={handleNextPlayer}
         isDisabled={index !== currentPlayerIndex} // Disable input for non-active roles
         detailsHidden={detailsHidden}
+        godMode={godMode}
       />
 
       {/* Player History Section */}

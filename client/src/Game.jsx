@@ -21,6 +21,7 @@ const Game = () => {
   const [gameOver, setGameOver] = useState(false);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
   const [debugMode, setDebugMode] = useState(true);
+  const [godMode, setGodMode] = useState(false);
 
   // ints
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -110,7 +111,7 @@ const Game = () => {
       if (prevPlayer) {
         // attempts to fill previous role's pending orders
         if (player.inventory < 0) {
-            prevPlayer.fulfilled = player.fulfilled;
+          prevPlayer.fulfilled = player.fulfilled;
         }
       }
     }
@@ -271,6 +272,13 @@ const Game = () => {
     setRolesHidden(hidden);
   }
 
+  const onRevealGodModeClick = () => {
+    const isGod = !godMode;
+    setRolesHidden(false);
+    setGodMode(isGod);
+    console.log(`god mode: ${isGod}`);
+  }
+
   const handleNextPlayer = () => {
     //next turn in week
     console.log(`Ending ${roles[currentPlayerIndex].name}s' turn.`)
@@ -356,7 +364,10 @@ const Game = () => {
               history={history[role.role_id]}
               toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
               name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
-              detailsHidden={false} />);
+              detailsHidden={false}
+              godMode={godMode}
+              />);
+
           } else {
             return (<Player player={role}
               key={role.role_id}
@@ -367,7 +378,8 @@ const Game = () => {
               history={history[role.role_id]}
               toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
               name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
-              detailsHidden={hideDetails} />
+              detailsHidden={hideDetails}
+              godMode={godMode}/>
 
             )
           }
@@ -382,7 +394,14 @@ const Game = () => {
         }
       </div>
       {debugMode ?
-        <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={onRestartClick} onRevealDetailsClick={onRevealDetailsClick} rounds={rounds} setRounds={setRounds} /> : <></>}
+        <DebugPanel
+          onAutoPlay={onAutoPlayClick}
+          onRestart={onRestartClick}
+          onRevealDetails={onRevealDetailsClick}
+          onRevealGodMode={onRevealGodModeClick}
+          rounds={rounds}
+          setRounds={setRounds}
+        /> : <></>}
 
     </div>
   );
