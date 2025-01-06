@@ -21,13 +21,15 @@ const Game = () => {
   const [gameOver, setGameOver] = useState(false);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
 
-  const [round, setRound] = useState(location.state?.round || 0);
+  // ints
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-  const [rounds, setRounds] = useState(location.state?.rounds || 4);
   const [entropy, setEntropy] = useState(location.state?.entropy || 2);
+  const [round, setRound] = useState(location.state?.round || 0);
+  const [rounds, setRounds] = useState(location.state?.rounds || 4);
   const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
   //does location.state exsist? then autoRole is the role stored in the game's nav. If no does selectedRole exist? then set to selectedRole other wise 1
   const autoRole = location.state?.role || selectedRole ? selectedRole : 1;
+
   // behavior objects stored in an array?
   // get behaviors from passed settings or use default behaviors if undefined
   const [customerBehavior, setCustomerBehavior] = useState(location.state?.customerBehavior || defaultBehavior);
@@ -39,7 +41,6 @@ const Game = () => {
   const [behaviors, setBehaviors] = useState(location.state?.behaviors || [customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior]);
 
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
-
   const [history, setHistory] = useState(location.state?.history ? splitFilterJSON(location.state?.history) : [[], [], [], [], []] || [[], [], [], [], []])
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -53,7 +54,7 @@ const Game = () => {
     { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
   ]);
 
-
+  // when loading print state values
   if (isLoading) {
     debugJSON({ rounds, round, currentPlayerIndex, selectedRole, behaviors, gameOver, user, history, errorMessage, roles });
   } else ({ message: `game view rerender`, rounds, rounds, round, currentPlayerIndex, selectedRole, roles })
@@ -245,7 +246,7 @@ const Game = () => {
     setIsAutoPlay(playing);
 
     //if turned on during user's turn, place an order according to behavior
-    if(currentPlayerIndex == selectedRole) {
+    if (currentPlayerIndex == selectedRole) {
       handleOrder(selectedRole, behaviors[selectedRole].phase1.orders);
     }
     // if the selected role is not 6 (DNE), set to 6 otherwise the value stoerd in autoRole;
