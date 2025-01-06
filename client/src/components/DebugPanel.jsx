@@ -22,11 +22,11 @@ const DebugPanel = ({ isLoading, gameOver, onAutoPlayClick, onRestartClick, onRe
     }
 
     return (
-        <>
+        <form className='[&_*]:m-2 p-2 [&_button]:bg-green-900'>
             <button onClick={handleAutoPlayClick}>AUTOPLAY</button>
             <button onClick={handleRestartClick}>RESTART</button>
             <button onClick={handleRevealDetailsClick}>REVEAL DETAILS</button>
-        </>
+        </form>
     )
 }
 

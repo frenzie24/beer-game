@@ -20,7 +20,7 @@ const Game = () => {
   const [rolesHidden, setRolesHidden] = useState(location.state?.rolesHidden || true)
   const [gameOver, setGameOver] = useState(false);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
-  const [debugMode, setDebugMode] = useState(false);
+  const [debugMode, setDebugMode] = useState(true);
 
   // ints
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -260,6 +260,11 @@ const Game = () => {
 
   }
 
+  const onRevealDetailsClick = () => {
+    const hidden = !rolesHidden;
+    setRolesHidden(hidden);
+  }
+
   const handleNextPlayer = () => {
     //next turn in week
     console.log(`Ending ${roles[currentPlayerIndex].name}s' turn.`)
@@ -333,27 +338,45 @@ const Game = () => {
       <Dashboard round={round} name={user.first_name} role={roles[selectedRole]?.name || 'CPU'} roundsRemaining={remainingRounds()} expenses={roles[selectedRole]?.expenses || roles[1].expenses} gameOver={gameOver} />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 flex-wrap gap-8">
-        {!gameOver ? roles.map((role) => (<Player player={role}
-          key={role.role_id}
-          index={role.role_id}
-          currentPlayerIndex={currentPlayerIndex}
-          handleNextPlayer={handleNextPlayer}
-          handleOrder={handleOrder}
-          history={history[role.role_id]}
-          toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
-          name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`} />
+        {!gameOver ? roles.map((role) => {
+          const hideDetails = role.role_id == selectedRole ? false : rolesHidden;
+          if (role.role_id === selectedRole) {
+            return (<Player player={role}
+              key={role.role_id}
+              index={role.role_id}
+              currentPlayerIndex={currentPlayerIndex}
+              handleNextPlayer={handleNextPlayer}
+              handleOrder={handleOrder}
+              history={history[role.role_id]}
+              toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
+              name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
+              detailsHidden={false} />);
+          } else {
+            return (<Player player={role}
+              key={role.role_id}
+              index={role.role_id}
+              currentPlayerIndex={currentPlayerIndex}
+              handleNextPlayer={handleNextPlayer}
+              handleOrder={handleOrder}
+              history={history[role.role_id]}
+              toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
+              name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
+              detailsHidden={hideDetails} />
 
-        )) : (
+            )
+          }
+        }) : (
           roles.map((role) => (
             <div key={role.role_id} className="mt-4 w-full">
               <h4 className="text-lg font-semibold">{role.name} Rounds with Pending Shipments: {role.roundsPending}</h4>
               <h4 className="text-lg font-semibold">{role.name} Total Expenses: {role.expenses}</h4>
             </div>
           ))
-        )}
+        )
+        }
       </div>
       {debugMode ?
-        <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={() => { }} onRevealDetailsClick={() => { }} /> : <></>}
+        <DebugPanel onAutoPlayClick={onAutoPlayClick} onRestartClick={onRestartClick} onRevealDetailsClick={onRevealDetailsClick} /> : <></>}
 
     </div>
   );

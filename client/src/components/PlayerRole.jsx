@@ -11,8 +11,9 @@ import { roleBgColors } from '../workers/GameController';
   - if were just trakcing inventory state we shouldnt need it for debugging
 */
 //TDO: move everything we are tracking to passed role obj
-const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, }) => {
+const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, detailsHidden }) => {
 
+  console.log(detailsHidden)
   // instead of pending received we track pending orders for the user
 
   const [ordered, setOrdered] = useState(role.ordered)
@@ -63,21 +64,22 @@ const PlayerRole = ({ role, onOrder, isActive, onNextPlayer, isDisabled, }) => {
   return (
     <div className={classString}>
       <h3 className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_80%)] text-3xl text-center font-bold text-shadow-90 rounded-lg w-full p-2">{role.name}</h3>
-      <div className='w-full'>
-        {role.isHidden ? <></> : <Table
-          headers={['Status', 'Value']}
-          data={
-            [
-              [getInventoryLabel(), role.inventory],
-              ['Received Orders', role.received],
-              ['Ordered This Week ', role.ordered],
+      {detailsHidden ? <></> :
+        <div className='w-full'>
+          <Table
+            headers={['Status', 'Value']}
+            data={
+              [
+                [getInventoryLabel(), role.inventory],
+                ['Received Orders', role.received],
+                ['Ordered This Week ', role.ordered],
 
-              ['Last Ordered', role.lastOrder]
+                ['Last Ordered', role.lastOrder]
 
-            ]
-          }
-        />}
-      </div>
+              ]
+            }
+          />
+        </div>}
       <input
         type="number"
         value={role.ordered ? role.ordered : ordered}
