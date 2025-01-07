@@ -9,6 +9,7 @@ const defaultBehavior = (rounds, delay) => {
     const _rounds = rounds ? rounds : defaultBehavior;
     return {
         name: 'default',
+        //phases stored in array
         phases: [
             {
                 rounds: 4,
@@ -18,7 +19,6 @@ const defaultBehavior = (rounds, delay) => {
                 orders: 8
             }
         ],
-        //phases stored in array or limited to 3 per behavior and we just check for null||undefined?
         phase1: {
             rounds: 4,
             orders: 4
