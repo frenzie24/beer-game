@@ -64,14 +64,13 @@ const Game = () => {
   // Handles turn changing for npc
   useEffect(() => {
     console.log(`Starting ${roles[currentPlayerIndex].name}s' turn`)
-    if (roles[currentPlayerIndex].role_id !== selectedRole) { // Random npcDelay between 500ms and 1500ms
+    if (roles[currentPlayerIndex].role_id !== selectedRole) {
 
-
+      // Random npcDelay to simulate the cpu players making decisions
       setTimeout(() => handleOrderForNonActiveRoles(currentPlayerIndex), npcDelay);
 
     }
 
-    // if (!location.state?.user) navigate('/login')
   }, [currentPlayerIndex]);
 
   //returns into setRoles
@@ -105,14 +104,7 @@ const Game = () => {
       // manufacturers just produce their behavior orders
       player.fulfilled = behaviors[idx].phase1.orders;
     }
-    /*
-          if (prevPlayer) {
-            // attempts to fill previous role's pending orders
-            if (player.inventory < 0) {
-              prevPlayer.fulfilled = player.fulfilled;
-            }
-          }
-            */
+
 
     player.inventory -= player.received;
     const newPlayers = players.map(entry => {
@@ -152,7 +144,7 @@ const Game = () => {
       const newRoles = checkFulfillment(index, updatedRoles, updatedRoles[index].ordered);
       setRoles(newRoles);
       handleNextPlayer();
-    }, 1500)
+    }, npcDelay)
   };
 
   const handleOrder = (id, amount) => {
@@ -164,7 +156,7 @@ const Game = () => {
       const newRoles = checkFulfillment(id, updatedRoles, amount)
       setRoles(newRoles);
       handleNextPlayer();
-    }, 500)
+    }, npcDelay)
 
   };
 
