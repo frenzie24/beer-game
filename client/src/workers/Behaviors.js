@@ -56,6 +56,7 @@ const randomBehavior = (rounds) => {
 
     const behavior = {
         name: 'Random',
+
         phase1: {
             rounds: getRandomInt(_rounds),
             orders: getRandomInt(20)
@@ -75,6 +76,8 @@ const randomBehavior = (rounds) => {
             backlog: 0.50
         }
     };
+    //this needs to be moved into behavior
+    behavior.phases = [behavior.phase1, behavior.phase2, behavior.phase3];
     return behavior;
 }
 
