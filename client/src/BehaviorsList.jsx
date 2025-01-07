@@ -19,7 +19,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     const [customCreated, setCustomCreated] = useState(false);
     const [delay, setDelay] = useState(1);
     const [costs, setCosts] = useState({ inventory: 0.50, backLog: 1.00 })
-
+//need to add logic to bubble up behavior selection
     const handleSelect = (behavior) => {
         const newBehavior = { ...behavior, delay, costs };
         setSelected(newBehavior)

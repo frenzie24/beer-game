@@ -9,6 +9,15 @@ const defaultBehavior = (rounds, delay) => {
     const _rounds = rounds ? rounds : defaultBehavior;
     return {
         name: 'default',
+        phases: [
+            {
+                rounds: 4,
+                orders: 4
+            },{
+                rounds: _rounds,
+                orders: 8
+            }
+        ],
         //phases stored in array or limited to 3 per behavior and we just check for null||undefined?
         phase1: {
             rounds: 4,
@@ -28,7 +37,7 @@ const defaultBehavior = (rounds, delay) => {
 }
 
 // TODO: use for custom behaviors
-const behaviorConstructor = ( delay, phases, cost) => {
+const behaviorConstructor = (delay, phases, cost) => {
     //maybe add some defaults just in case?
     return {
         phases, cost, delay
