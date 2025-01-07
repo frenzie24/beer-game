@@ -19,7 +19,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     const [customCreated, setCustomCreated] = useState(false);
     const [delay, setDelay] = useState(1);
     const [costs, setCosts] = useState({ inventory: 0.50, backLog: 1.00 })
-//need to add logic to bubble up behavior selection
+    //need to add logic to bubble up behavior selection
     const handleSelect = (behavior) => {
         const newBehavior = { ...behavior, delay, costs };
         setSelected(newBehavior)
@@ -45,7 +45,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
         switch (id) {
             case 0:
                 const dBehavior = defaultBehavior(rounds);
-                handleSelect(dBehavior);
+                handleSelect(defaultBehavior(rounds));
                 setCustomVisible(false)
                 break;
             case 1:
@@ -63,10 +63,8 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
                 // logic here when you think of a prepared behavior to put here
                 break;
             case 4:
-                // declare this always.
-                // bools like to misbave when updating their state to the negation of their current state
-                // especially when done using the react useState
-                if (customCreated) handleSelect({ name: 'custom', phase1: selected.phase1, phase2: selected.phase2, phase3: selected.phase3 })
+                //bubble a new behavior object to game view
+                if (customCreated) handleSelect({ name: 'custom', phases: [selected.phase1, selected.phase2, selected.phase3], phase1: selected.phase1, phase2: selected.phase2, phase3: selected.phase3 })
                 setCustomVisible(true)
                 break;
 
