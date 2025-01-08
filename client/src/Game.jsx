@@ -26,21 +26,11 @@ const Game = () => {
 
   // ints
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(1);
-  const [entropy, setEntropy] = useState(location.state?.entropy || 2);
   const [round, setRound] = useState(location.state?.round || 0);
   const [rounds, setRounds] = useState(location.state?.rounds || 10);
   const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
   //does location.state exsist? then autoRole is the role stored in the game's nav. If no does selectedRole exist? then set to selectedRole other wise 1
   const autoRole = location.state?.role || 1;
-
-  // behavior objects stored in an array?
-  /*
-  const [customerBehavior, setCustomerBehavior] = useState(location.state?.customerBehavior || defaultBehavior);
-  const [retailerBehavior, setRetailerBehavior] = useState(location.state?.retailerBehavior || defaultBehavior);
-  const [wholesalerBehavior, setWholesalerBehavior] = useState(location.state?.wholesalerBehavior || defaultBehavior);
-  const [distributionerBehavior, setDistributionerBehavior] = useState(location.state?.distributionerBehavior || defaultBehavior);
-  const [manufacturerBehavior, setManufacturerBehavior] = useState(location.state?.manufacturerBehavior || defaultBehavior);
-  */
 
   // get behaviors from passed settings or use default behaviors if undefined
   const [behaviors, setBehaviors] = useState(location.state?.behaviors || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
@@ -113,7 +103,6 @@ const Game = () => {
       // manufacturers just produce their behavior orders
       const behavior = behaviors[idx];
       const orders = behavior.getRoundOrder(round);
-
       player.fulfilled = orders;
     }
 
@@ -127,7 +116,6 @@ const Game = () => {
 
     })
 
-    //   debugJSON([player, prevPlayer? prevPlayer : '', nextPlayer ? nextPlayer : '']);
 
     return newPlayers;
 
@@ -142,7 +130,6 @@ const Game = () => {
         const orders = behavior.getRoundOrder(round);
         const orderAmount =orders;
 
-        //  const randomOrderAmount = randomOrders(entropy) * index;
         entry.ordered = orderAmount;
         //   entry.ordered = randomOrderAmount;
         if (entry.pendingReceived > 0) {
@@ -230,7 +217,7 @@ const Game = () => {
     });
 
     //let _history = stringifyData2D(newHistory);
-    const data = { game: { round, rounds, selectedRole, entropy, history: newHistory.join('|'), id: location.state?.id }, players: updatedRoles, }
+    const data = { game: { round, rounds, selectedRole,  history: newHistory.join('|'), id: location.state?.id }, players: updatedRoles, }
 
     // await updateServer({ ...data });
 

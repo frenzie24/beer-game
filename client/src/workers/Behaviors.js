@@ -7,38 +7,7 @@ const defaultRounds = 10;
 // order 4 units for 4 rounds, then order 8 units per round till the end of the game
 const defaultBehavior = (rounds = 10, delay = 1) => {
     return new Behavior();
-    /*
-    const _rounds = rounds ? rounds : defaultBehavior;
-    return {
-        name: 'default',
-        // index of current phase
-        currentPhase: 0,
-        //phases stored in array
-        phases: [
-            {
-                rounds: 4,
-                orders: 4
-            }, {
-                rounds: _rounds,
-                orders: 8
-            }
-        ],
-        phase1: {
-            rounds: 4,
-            orders: 4
-        },
-        phase2: {
-            rounds: _rounds,
-            orders: 8
-        },
-        // the time in rounds it takes to ship to a customer
-        delay: delay ? delay : 1,
-        cost: {
-            inventory: 0.25,
-            backlog: 0.50
-        }
-    };
-    */
+
 }
 
 // class struct for behavior obj
@@ -121,26 +90,5 @@ const randomBehavior = (rounds) => {
     return behavior;
 }
 
-/*
-old
-const lowToHighBehavior = ({ rounds }) => {
-    return {
-        name: 'Increase Orders Over Time ',
-        phase1: {
-            rounds: 3,
-            orders: 4
-        },
-        phase2: {
-            rounds: 3,
-            orders: 8
-        },
-        phase3: {
-            rounds: rounds,
-            orders: 12
-        },
-        delay: 4
-    };
-}
-*/
 
 export { defaultBehavior, randomBehavior, Behavior };
