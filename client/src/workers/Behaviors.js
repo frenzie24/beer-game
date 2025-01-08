@@ -62,16 +62,24 @@ class Behavior {
         this.currentRoundToPhaseChange = this.phases[0].rounds - 1;
         //delay in weeks, use passed delay if possible
         this.delay = params?.delay || 1,
-        //cost pet item in dollars, use pased cost obj if possible
-        this.cost = params?.cost || {inventory: 0.25, backlog: 0.50}
+            //cost pet item in dollars, use pased cost obj if possible
+            this.cost = params?.cost || { inventory: 0.25, backlog: 0.50 }
 
     }
 
+    // returns the appropriate order value based on the current phase determined by round param
     handleOrder = (round) => {
-        if(round >= this.currentRoundToPhaseChange) {
-            this.currentRoundToPhaseChange += this.phases[++this.currentPhase].rounds;
-            debugger;
+        if (round >= this.currentRoundToPhaseChange) {
+            // ensure we dont iterate into undefined
+            if (this.currentPhase < this.phases.length - 1) {
+                //add the next phase's rounds value to currentRoundToPhaseChange. Increments currentphase to next index before array access
+                //++variable vs variable++
+                this.currentRoundToPhaseChange += this.phases[++this.currentPhase].rounds;
+                debugger;
+            }
         }
+        // after checking if currentPhase needs to increment, return orders field of the current phase
+        return this.phases[this.currentPhase].orders;
     }
 }
 
