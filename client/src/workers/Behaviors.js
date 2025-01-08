@@ -6,7 +6,8 @@ const defaultRounds = 10;
 
 // order 4 units for 4 rounds, then order 8 units per round till the end of the game
 const defaultBehavior = (rounds = 10, delay = 1) => {
-
+    return new Behavior();
+    /*
     const _rounds = rounds ? rounds : defaultBehavior;
     return {
         name: 'default',
@@ -37,14 +38,14 @@ const defaultBehavior = (rounds = 10, delay = 1) => {
             backlog: 0.50
         }
     };
+    */
 }
 
 // class struct for behavior obj
 class Behavior {
-    constructor({ name, phases, delay, cost }) {
+    constructor( name, phases, delay, cost ) {
         // index of current phase
         this.currentPhase = 0;
-
         // use passed name param if possible
         this.name = name || 'default'
         // if params has a phases that is an array use it, otherwise create a phases array with default behaviors

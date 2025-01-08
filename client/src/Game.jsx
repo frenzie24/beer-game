@@ -4,7 +4,7 @@ import Player from './components/Player';
 import ErrorModal from './components/ErrorModal';
 import Connection from './workers/Conncetion';
 import Dashboard from './components/Dashboard';
-import { defaultBehavior } from './workers/Behaviors';
+import { defaultBehavior, Behavior } from './workers/Behaviors';
 import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from './workers/GameController';
 import DebugPanel from './components/DebugPanel';
 
