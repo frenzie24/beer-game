@@ -82,4 +82,33 @@ const debugJSON = (data) => {
   return true;
 }
 
+/*
+
+// neat!!
+const PREFIX = "prefix";
+
+class ClassWithField {
+  field;
+  fieldWithInitializer = "instance field";
+  [`${PREFIX}Field`] = "prefixed field";
+}
+  */
+/*
+class GameController {
+
+  // what variables does gamecontroller need
+  #currentPlayerIndex = 1;
+
+  constructor({selectedRole, round, rounds, autoRole, roles, debugMode, history, currentPlayerIndex}) {
+    this.selectedRole = selectedRole;
+    this.round = round || 0;
+
+  }
+
+  update= () => {
+
+  }
+
+}*/
+
 export { delim, arrayDelim, liStyle, roleBgColors, npcDelay, createNewRolesArray, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders };
