@@ -61,9 +61,11 @@ class Behavior {
         //rounds are tracked starting from 0. inits to first phase rounds - 1 for expectyed behavior
         this.currentRoundToPhaseChange = this.phases[0].rounds - 1;
         //delay in weeks, use passed delay if possible
-        this.delay = params?.delay || 1,
-            //cost pet item in dollars, use pased cost obj if possible
-            this.cost = params?.cost || { inventory: 0.25, backlog: 0.50 }
+        this.delay = params?.delay || 1;
+        //cost pet item in dollars, use pased cost obj if possible
+        this.cost = params?.cost || { inventory: 0.25, backlog: 0.50 }
+        // array to store orders shipped to the role's customer that has not yet arrived
+        this.shipments = [];
 
     }
 
@@ -80,6 +82,15 @@ class Behavior {
         }
         // after checking if currentPhase needs to increment, return orders field of the current phase
         return this.phases[this.currentPhase].orders;
+    }
+
+    // returns a shipment obj
+    createShipment = (ammount, round) => {
+        return {
+            ammount: ammount,
+            delay: this.delay,
+            arrives: round + this.delay
+        }
     }
 }
 
