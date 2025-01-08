@@ -24,6 +24,10 @@ class Role {
         this.behavior = params?.behavior;
     }
 
+    order = () => {
+
+    }
+
 }
 
 export { Role };

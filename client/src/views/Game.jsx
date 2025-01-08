@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Player from './containers/Player';
 import ErrorModal from './components/ErrorModal';
-import Connection from '../workers/Conncetion';
+import Connection from '../controllers/Conncetion';
 import Dashboard from './containers/Dashboard';
-import { defaultBehavior } from '../workers/Behaviors';
+import { defaultBehavior } from '../controllers/Behaviors';
 import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from '../controllers/GameController';
 import DebugPanel from './containers/DebugPanel';
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { defaultBehavior, randomBehavior } from '../../workers/Behaviors'
+import { defaultBehavior, randomBehavior } from '../../controllers/Behaviors'
 import Behavior from '../Behavior';
 import DelayInput from './DelayInput';
 import CostsInput from './CostsInput';
