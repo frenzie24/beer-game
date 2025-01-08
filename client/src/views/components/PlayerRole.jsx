@@ -1,7 +1,7 @@
 // src/components/PlayerRole.js
 import React, { useState } from 'react';
 import Table from './Table';
-import { roleBgColors } from '../workers/GameController';
+import { roleBgColors } from '../controllers/GameController';
 
 // should we store role behavior in player role view and bubble up?
 /*

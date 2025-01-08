@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ErrorModal from '../components/ErrorModal';
+import ErrorModal from './components/ErrorModal';
 import Connection from '../workers/Conncetion';
 import Behavior from './Behavior';
-import BehaviorsList from '../components/BehaviorsList';
+import BehaviorsList from './components/BehaviorsList';
 
 import { defaultBehavior } from '../workers/Behaviors';
 

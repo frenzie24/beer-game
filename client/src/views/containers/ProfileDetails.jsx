@@ -1,5 +1,5 @@
 import React from 'react';
-import InputField from '../../components/InputField';
+import InputField from '../components/InputField';
 
 const ProfileDetails = ({ user, isEditing, setFirstName, setLastName, setEmail }) => {
   if (!user) return null;

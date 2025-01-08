@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { defaultBehavior, randomBehavior } from '../workers/Behaviors'
-import Behavior from '../views/Behavior';
+import { defaultBehavior, randomBehavior } from '../../workers/Behaviors'
+import Behavior from '../Behavior';
 import DelayInput from './DelayInput';
 import CostsInput from './CostsInput';
 //increase element legiblity by condensing className

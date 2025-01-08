@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Player from '../containers/Player';
-import ErrorModal from '../components/ErrorModal';
+import Player from './containers/Player';
+import ErrorModal from './components/ErrorModal';
 import Connection from '../workers/Conncetion';
-import Dashboard from '../containers/Dashboard';
+import Dashboard from './containers/Dashboard';
 import { defaultBehavior } from '../workers/Behaviors';
-import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from '../workers/GameController';
-import DebugPanel from '../containers/DebugPanel';
+import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from '../controllers/GameController';
+import DebugPanel from './containers/DebugPanel';
 
 // this should be set on the behavior screen imo
 const startInventories = [0, 0, 4, 4, 4];

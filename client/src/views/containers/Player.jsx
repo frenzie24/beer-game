@@ -1,6 +1,6 @@
 // src/components/Player.js
 import React, { useState } from 'react';
-import PlayerRole from '../../components/PlayerRole';
+import PlayerRole from '../components/PlayerRole';
 
 const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, handleOrder, toggleHistoryVisibility, name, detailsHidden, godMode }) => {
   const [orderAmount, setOrderAmount] = useState(0);
