@@ -62,7 +62,7 @@ class Behavior {
     }
 
     // returns the appropriate order value based on the current phase determined by round param
-    handleOrder = (round) => {
+    getRoundOrder = (round) => {
         if (round >= this.currentRoundToPhaseChange) {
             // ensure we dont iterate into undefined
             if (this.currentPhase < this.phases.length - 1) {

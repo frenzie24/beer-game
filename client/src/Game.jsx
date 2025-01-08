@@ -111,7 +111,10 @@ const Game = () => {
       }
     } else {
       // manufacturers just produce their behavior orders
-      player.fulfilled = behaviors[idx].phase1.orders;
+      const behavior = behaviors[idx];
+      const orders = behavior.getRoundOrder(round);
+
+      player.fulfilled = orders;
     }
 
 
@@ -135,7 +138,9 @@ const Game = () => {
     const updatedRoles = roles.map((entry, idx) => {
       if (idx === index) {
         // call randomOrders()
-        const orderAmount = behaviors[index].phase1.orders;
+        const behavior = behaviors[idx];
+        const orders = behavior.getRoundOrder(round);
+        const orderAmount =orders;
 
         //  const randomOrderAmount = randomOrders(entropy) * index;
         entry.ordered = orderAmount;
@@ -254,7 +259,10 @@ const Game = () => {
 
     //if turned on during user's turn, place an order according to behavior
     if (currentPlayerIndex == selectedRole) {
-      handleOrder(selectedRole, behaviors[selectedRole].phase1.orders);
+      // cur
+      const behavior = behaviors[currentPlayerIndex];
+      const orders = behavior.getRoundOrder(round);
+      handleOrder(currentPlayerIndex, orders);
     }
     // if the selected role is not 6 (DNE), set to 6 otherwise the value stoerd in autoRole;
     setSelectedRole(selectedRole != 6 ? 6 : autoRole);
