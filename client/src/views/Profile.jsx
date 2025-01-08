@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ProfileButton from './components/ProfileButton';
-import ProfileDetails from './components/ProfileDetails';
-import Logout from './Logout';
+import ProfileDetails from './containers/ProfileDetails';
+import Logout from '../Logout';
 import GameList from './components/GameList';
 
 const Profile = () => {

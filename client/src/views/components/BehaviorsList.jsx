@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { defaultBehavior, randomBehavior } from './workers/Behaviors'
-import Behavior from './Behavior';
-import DelayInput from './components/DelayInput';
-import CostsInput from './components/CostsInput';
+import { defaultBehavior, randomBehavior } from '../../controllers/Behaviors'
+import Behavior from '../Behavior';
+import DelayInput from './DelayInput';
+import CostsInput from './CostsInput';
 //increase element legiblity by condensing className
 const liStyle = 'w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 capitalize';
 
@@ -19,7 +19,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
     const [customCreated, setCustomCreated] = useState(false);
     const [delay, setDelay] = useState(1);
     const [costs, setCosts] = useState({ inventory: 0.50, backLog: 1.00 })
-
+    //need to add logic to bubble up behavior selection
     const handleSelect = (behavior) => {
         const newBehavior = { ...behavior, delay, costs };
         setSelected(newBehavior)
@@ -45,7 +45,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
         switch (id) {
             case 0:
                 const dBehavior = defaultBehavior(rounds);
-                handleSelect(dBehavior);
+                handleSelect(defaultBehavior(rounds));
                 setCustomVisible(false)
                 break;
             case 1:
@@ -63,10 +63,8 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
                 // logic here when you think of a prepared behavior to put here
                 break;
             case 4:
-                // declare this always.
-                // bools like to misbave when updating their state to the negation of their current state
-                // especially when done using the react useState
-                if (customCreated) handleSelect({ name: 'custom', phase1: selected.phase1, phase2: selected.phase2, phase3: selected.phase3 })
+                //bubble a new behavior object to game view
+                if (customCreated) handleSelect({ name: 'custom', phases: [selected.phase1, selected.phase2, selected.phase3], phase1: selected.phase1, phase2: selected.phase2, phase3: selected.phase3 })
                 setCustomVisible(true)
                 break;
 

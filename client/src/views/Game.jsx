@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Player from './components/Player';
+import Player from './containers/Player';
 import ErrorModal from './components/ErrorModal';
-import Connection from './workers/Conncetion';
-import Dashboard from './components/Dashboard';
-import { defaultBehavior } from './workers/Behaviors';
-import { delim, arrayDelim, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from './workers/GameController';
-import DebugPanel from './components/DebugPanel';
+import Connection from '../controllers/Conncetion';
+import Dashboard from './containers/Dashboard';
+import { defaultBehavior } from '../controllers/Behaviors';
+import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from '../controllers/GameController';
+import DebugPanel from './containers/DebugPanel';
 
-
+// this should be set on the behavior screen imo
+const startInventories = [0, 0, 4, 4, 4];
 // game must nav from gamesettings to get data required
 const Game = () => {
 
@@ -25,36 +26,23 @@ const Game = () => {
 
   // ints
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(1);
-  const [entropy, setEntropy] = useState(location.state?.entropy || 2);
   const [round, setRound] = useState(location.state?.round || 0);
-  const [rounds, setRounds] = useState(location.state?.rounds || 4);
+  const [rounds, setRounds] = useState(location.state?.rounds || 10);
   const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
   //does location.state exsist? then autoRole is the role stored in the game's nav. If no does selectedRole exist? then set to selectedRole other wise 1
   const autoRole = location.state?.role || 1;
 
-  // behavior objects stored in an array?
   // get behaviors from passed settings or use default behaviors if undefined
-  const [customerBehavior, setCustomerBehavior] = useState(location.state?.customerBehavior || defaultBehavior);
-  const [retailerBehavior, setRetailerBehavior] = useState(location.state?.retailerBehavior || defaultBehavior);
-  const [wholesalerBehavior, setWholesalerBehavior] = useState(location.state?.wholesalerBehavior || defaultBehavior);
-  const [distributionerBehavior, setDistributionerBehavior] = useState(location.state?.distributionerBehavior || defaultBehavior);
-  const [manufacturerBehavior, setManufacturerBehavior] = useState(location.state?.manufacturerBehavior || defaultBehavior);
-
-  const [behaviors, setBehaviors] = useState(location.state?.behaviors || [customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior]);
+  const [behaviors, setBehaviors] = useState(location.state?.behaviors || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
 
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
+
   const [history, setHistory] = useState(location.state?.history ? splitFilterJSON(location.state?.history) : [[], [], [], [], []] || [[], [], [], [], []])
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [roles, setRoles] = useState([
-    { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: parseFloat(0.0) },
-
-    { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses:parseFloat(0.0)  },
-    { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-  ]);
+  // createNewRolesArray gets passed an options obj and an inventories array
+  const [roles, setRoles] = useState(createNewRolesArray({ user_id: user.id, game_id: location.state?.id || 1 }, startInventories), defaultBehavior(rounds, 1));
 
   // when loading print state values
   if (isLoading) {
@@ -64,23 +52,23 @@ const Game = () => {
   // Handles turn changing for npc
   useEffect(() => {
     console.log(`Starting ${roles[currentPlayerIndex].name}s' turn`)
-    if (roles[currentPlayerIndex].role_id !== selectedRole) { // Random npcDelay between 500ms and 1500ms
+    if (roles[currentPlayerIndex].role_id !== selectedRole) {
 
-
+      // Random npcDelay to simulate the cpu players making decisions
       setTimeout(() => handleOrderForNonActiveRoles(currentPlayerIndex), npcDelay);
 
     }
 
-    // if (!location.state?.user) navigate('/login')
   }, [currentPlayerIndex]);
 
+
+  // fulfillment refers to the number of orders the next player can fulfill.
+  // fulfilled is the ammount that will be added to player's inventory when the shipment arrives
   //returns into setRoles
   const checkFulfillment = (idx, players, amount) => {
     // set lastFulfilled to current fulfilled
 
     const player = players[idx];
-
-
     // when the current player is the customer
     if (idx === 0) {
 
@@ -103,16 +91,11 @@ const Game = () => {
       }
     } else {
       // manufacturers just produce their behavior orders
-      player.fulfilled = behaviors[idx].phase1.orders;
+      const behavior = behaviors[idx];
+      const orders = behavior.getRoundOrder(round);
+      player.fulfilled = orders;
     }
-    /*
-          if (prevPlayer) {
-            // attempts to fill previous role's pending orders
-            if (player.inventory < 0) {
-              prevPlayer.fulfilled = player.fulfilled;
-            }
-          }
-            */
+
 
     player.inventory -= player.received;
     const newPlayers = players.map(entry => {
@@ -122,21 +105,18 @@ const Game = () => {
       else return entry;
 
     })
-
-    //   debugJSON([player, prevPlayer? prevPlayer : '', nextPlayer ? nextPlayer : '']);
-
     return newPlayers;
 
   }
-
 
   const handleOrderForNonActiveRoles = (index) => {
     const updatedRoles = roles.map((entry, idx) => {
       if (idx === index) {
         // call randomOrders()
-        const orderAmount = behaviors[index].phase1.orders;
+        const behavior = behaviors[idx];
+        const orders = behavior.getRoundOrder(round);
+        const orderAmount =orders;
 
-        //  const randomOrderAmount = randomOrders(entropy) * index;
         entry.ordered = orderAmount;
         //   entry.ordered = randomOrderAmount;
         if (entry.pendingReceived > 0) {
@@ -145,14 +125,13 @@ const Game = () => {
       }
       return entry;
     });
-    //setRoles(updatedRoles);
 
 
     setTimeout(() => {
       const newRoles = checkFulfillment(index, updatedRoles, updatedRoles[index].ordered);
       setRoles(newRoles);
       handleNextPlayer();
-    }, 1500)
+    }, npcDelay)
   };
 
   const handleOrder = (id, amount) => {
@@ -164,7 +143,7 @@ const Game = () => {
       const newRoles = checkFulfillment(id, updatedRoles, amount)
       setRoles(newRoles);
       handleNextPlayer();
-    }, 500)
+    }, npcDelay)
 
   };
 
@@ -194,6 +173,7 @@ const Game = () => {
         received: receivedAmount,
         fulfilled: role.fulfilled,
         lastFulfilled: role.lastFulfilled,
+        // what is this?
         pendingReceived: role.pendingReceived + role.received,
         totalReceived: role.totalReceived,
         expenses: newExpenses,
@@ -218,12 +198,12 @@ const Game = () => {
         received: receivedAmount,
         totalReceived: role.totalReceived + receivedAmount,
         //  pendingReceived: pending,
-        //  history: `${role.history},${historyEntry}`
+
       };
     });
 
     //let _history = stringifyData2D(newHistory);
-    const data = { game: { round, rounds, selectedRole, entropy, history: newHistory.join('|'), id: location.state?.id }, players: updatedRoles, }
+    const data = { game: { round, rounds, selectedRole,  history: newHistory.join('|'), id: location.state?.id }, players: updatedRoles, }
 
     // await updateServer({ ...data });
 
@@ -252,7 +232,10 @@ const Game = () => {
 
     //if turned on during user's turn, place an order according to behavior
     if (currentPlayerIndex == selectedRole) {
-      handleOrder(selectedRole, behaviors[selectedRole].phase1.orders);
+      // cur
+      const behavior = behaviors[currentPlayerIndex];
+      const orders = behavior.getRoundOrder(round);
+      handleOrder(currentPlayerIndex, orders);
     }
     // if the selected role is not 6 (DNE), set to 6 otherwise the value stoerd in autoRole;
     setSelectedRole(selectedRole != 6 ? 6 : autoRole);

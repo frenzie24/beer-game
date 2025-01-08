@@ -1,5 +1,5 @@
 import React from 'react';
-import InputField from './InputField'; // Assuming InputField is a reusable input component
+import InputField from '../components/InputField'; // Assuming InputField is a reusable input component
 
 const RegistrationForm = ({ handleSubmit, firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword }) => {
   return (

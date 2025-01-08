@@ -47,7 +47,7 @@ const Behavior = ({ name = 'custom', rounds, onSubmit, onCancel }) => {
         debugger;
         e.preventDefault();
         try {
-            onSubmit({ name, phase1, phase2, phase3 });
+            onSubmit({ name, phases:[phase1, phase2, phase3], phase1, phase2, phase3 });
         } catch (err) {
             debugger;
         }

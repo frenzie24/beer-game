@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ErrorModal from './components/ErrorModal';
-import RegistrationForm from './components/RegistrationForm'; // Import RegistrationForm
+import RegistrationForm from './containers/RegistrationForm'; // Import RegistrationForm
 import { useNavigate } from 'react-router-dom';
 
 const Registration = () => {

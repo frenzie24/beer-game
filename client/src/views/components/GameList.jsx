@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 const GameList = ({ user, games }) => {
     const navigate = useNavigate();
     const handleClick = (game) => {

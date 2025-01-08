@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorModal from './components/ErrorModal';
-import Connection from './workers/Conncetion';
+import Connection from '../controllers/Conncetion';
 import Behavior from './Behavior';
-import BehaviorsList from './BehaviorsList';
+import BehaviorsList from './components/BehaviorsList';
+
+import { defaultBehavior } from '../controllers/Behaviors';
 
 const GameSettings = ({ }) => {
   // State for the game settings
@@ -12,15 +14,15 @@ const GameSettings = ({ }) => {
   const [entropy, setEntropy] = useState(2); // Default entropy level (1 to 10)
   const location = useLocation();
   const [user, setUser] = useState(location.state?.user || null)
-  const [customerBehavior, setCustomerBehavior] = useState();
+  const [customerBehavior, setCustomerBehavior] = useState(defaultBehavior);
 
-  const [retailerBehavior, setRetailerBehavior] = useState();
+  const [retailerBehavior, setRetailerBehavior] = useState(defaultBehavior);
 
-  const [wholesalerBehavior, setWholesalerBehavior] = useState();
+  const [wholesalerBehavior, setWholesalerBehavior] = useState(defaultBehavior);
 
-  const [distributionerBehavior, setDistributionerBehavior] = useState();
+  const [distributionerBehavior, setDistributionerBehavior] = useState(defaultBehavior);
 
-  const [manufacturerBehavior, setManufacturerBehavior] = useState();
+  const [manufacturerBehavior, setManufacturerBehavior] = useState(defaultBehavior);
   const navigate = useNavigate(); // Use useNavigate for React Router navigation
   const [roles, setRoles] = useState([
     { role_id: 0, name: "Retailers", user_id: user?.id ? user.id : 1, inventory: 10, ordered: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: [], isHistoryVisible: false },
@@ -31,9 +33,10 @@ const GameSettings = ({ }) => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleBehaviorSubmit = ({ phases }) => {
+  //currently being handled entirely within behavior components by passing associated setBehavior
+  const handleBehaviorSubmit = (behavior) => {
     debugger;
-    console.log(phases)
+    console.log(behavior)
   }
 
   // Handle form submission to start the game

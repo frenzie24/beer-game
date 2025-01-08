@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './Login';  // Import Login component
-import Registration from './Registration';  // Import Registration component
-import Profile from './Profile';  // Import UserProfile component
-import Game from "./Game";
-import GameSettings from './GameSettings';
+import Login from './views/Login';  // Import Login component
+import Registration from './views/Registration';  // Import Registration component
+import Profile from './views/Profile';  // Import UserProfile component
+import Game from "./views/Game";
+import GameSettings from './views/GameSettings';
 
-import Behavior from './Behavior';
+import Behavior from './views/Behavior';
 
 const App = () => {
   return (
