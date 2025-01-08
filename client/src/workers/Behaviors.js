@@ -39,31 +39,22 @@ const defaultBehavior = (rounds = 10, delay = 1) => {
     };
 }
 
-// TODO: use for custom behaviors
-const behaviorConstructor = (delay, phases, cost) => {
-    //maybe add some defaults just in case?
-    return {
-        phases, cost, delay
-    };
-
-}
-
 // class struct for behavior obj
 class Behavior {
-    constructor({ params }) {
+    constructor({ name, phases, delay, cost }) {
         // index of current phase
         this.currentPhase = 0;
 
         // use passed name param if possible
-        this.name = params?.name || 'default'
+        this.name = name || 'default'
         // if params has a phases that is an array use it, otherwise create a phases array with default behaviors
-        this.phases = Array.isArray(params?.phases) ? params.phases : [{ rounds: 4, orders: 4 }, { rounds: 10, orders: 8 }]
+        this.phases = Array.isArray(phases) ? params.phases : [{ rounds: 4, orders: 4 }, { rounds: 10, orders: 8 }]
         //rounds are tracked starting from 0. inits to first phase rounds - 1 for expectyed behavior
         this.currentRoundToPhaseChange = this.phases[0].rounds - 1;
         //delay in weeks, use passed delay if possible
-        this.delay = params?.delay || 1;
+        this.delay = delay || 1;
         //cost pet item in dollars, use pased cost obj if possible
-        this.cost = params?.cost || { inventory: 0.25, backlog: 0.50 }
+        this.cost = cost || { inventory: 0.25, backlog: 0.50 }
         // array to store orders shipped to the role's customer that has not yet arrived
         this.shipments = [];
 
