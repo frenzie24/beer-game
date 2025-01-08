@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const Dashboard = ({ round, name, role, roundsRemaining, gameOver, expenses }) => {
-    debugger;
     return (
         <section>
              <h1 className="text-6xl font-extrabold mb-4"> Beer Game</h1>

@@ -33,6 +33,7 @@ const GameSettings = ({ }) => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
+  //currently being handled entirely within behavior components by passing associated setBehavior
   const handleBehaviorSubmit = (behavior) => {
     debugger;
     console.log(behavior)

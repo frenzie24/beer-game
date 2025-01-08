@@ -4,11 +4,13 @@ const defaultRounds = 10;
     REFRACTOR PHASES TO AN ARRAY WTF IS PHASE1
 */
 // order 4 units for 4 rounds, then order 8 units per round till the end of the game
-const defaultBehavior = (rounds, delay) => {
+const defaultBehavior = (rounds=10, delay=1) => {
 
     const _rounds = rounds ? rounds : defaultBehavior;
     return {
         name: 'default',
+        // index of current phase
+        currentPhase: 0,
         //phases stored in array
         phases: [
             {

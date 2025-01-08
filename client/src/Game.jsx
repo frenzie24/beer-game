@@ -5,10 +5,11 @@ import ErrorModal from './components/ErrorModal';
 import Connection from './workers/Conncetion';
 import Dashboard from './components/Dashboard';
 import { defaultBehavior } from './workers/Behaviors';
-import { delim, arrayDelim, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from './workers/GameController';
+import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from './workers/GameController';
 import DebugPanel from './components/DebugPanel';
 
-
+// this should be set on the behavior screen imo
+const startInventories = [0, 0, 4, 4, 4];
 // game must nav from gamesettings to get data required
 const Game = () => {
 
@@ -27,34 +28,42 @@ const Game = () => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(1);
   const [entropy, setEntropy] = useState(location.state?.entropy || 2);
   const [round, setRound] = useState(location.state?.round || 0);
-  const [rounds, setRounds] = useState(location.state?.rounds || 4);
+  const [rounds, setRounds] = useState(location.state?.rounds || 10);
   const [selectedRole, setSelectedRole] = useState(location.state?.role || 1);
   //does location.state exsist? then autoRole is the role stored in the game's nav. If no does selectedRole exist? then set to selectedRole other wise 1
   const autoRole = location.state?.role || 1;
 
   // behavior objects stored in an array?
-  // get behaviors from passed settings or use default behaviors if undefined
+  /*
   const [customerBehavior, setCustomerBehavior] = useState(location.state?.customerBehavior || defaultBehavior);
   const [retailerBehavior, setRetailerBehavior] = useState(location.state?.retailerBehavior || defaultBehavior);
   const [wholesalerBehavior, setWholesalerBehavior] = useState(location.state?.wholesalerBehavior || defaultBehavior);
   const [distributionerBehavior, setDistributionerBehavior] = useState(location.state?.distributionerBehavior || defaultBehavior);
   const [manufacturerBehavior, setManufacturerBehavior] = useState(location.state?.manufacturerBehavior || defaultBehavior);
+  */
 
-  const [behaviors, setBehaviors] = useState(location.state?.behaviors || [customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior]);
+  // get behaviors from passed settings or use default behaviors if undefined
+  const [behaviors, setBehaviors] = useState(location.state?.behaviors || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
 
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
+
   const [history, setHistory] = useState(location.state?.history ? splitFilterJSON(location.state?.history) : [[], [], [], [], []] || [[], [], [], [], []])
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [roles, setRoles] = useState([
-    { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: parseFloat(0.0) },
 
-    { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses:parseFloat(0.0)  },
-    { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-  ]);
+  /*
+    const [roles, setRoles] = useState([
+      { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: parseFloat(0.0) },
+      { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses:parseFloat(0.0)  },
+      { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+      { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+      { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
+    ]);
+    */
+
+  // createNewRolesArray gets passed an options obj and an inventories array
+  const [roles, setRoles] = useState(createNewRolesArray({ user_id: user.id, game_id: location.state?.id || 1 }, startInventories));
 
   // when loading print state values
   if (isLoading) {
@@ -186,6 +195,7 @@ const Game = () => {
         received: receivedAmount,
         fulfilled: role.fulfilled,
         lastFulfilled: role.lastFulfilled,
+        // what is this?
         pendingReceived: role.pendingReceived + role.received,
         totalReceived: role.totalReceived,
         expenses: newExpenses,
@@ -210,7 +220,7 @@ const Game = () => {
         received: receivedAmount,
         totalReceived: role.totalReceived + receivedAmount,
         //  pendingReceived: pending,
-        //  history: `${role.history},${historyEntry}`
+
       };
     });
 
