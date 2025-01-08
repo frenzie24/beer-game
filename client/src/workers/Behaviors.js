@@ -7,7 +7,6 @@ const defaultRounds = 10;
 // order 4 units for 4 rounds, then order 8 units per round till the end of the game
 const defaultBehavior = (rounds = 10, delay = 1) => {
     return new Behavior();
-
 }
 
 // class struct for behavior obj

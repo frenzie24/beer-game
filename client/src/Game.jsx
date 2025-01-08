@@ -4,7 +4,7 @@ import Player from './components/Player';
 import ErrorModal from './components/ErrorModal';
 import Connection from './workers/Conncetion';
 import Dashboard from './components/Dashboard';
-import { defaultBehavior, Behavior } from './workers/Behaviors';
+import { defaultBehavior } from './workers/Behaviors';
 import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from './workers/GameController';
 import DebugPanel from './components/DebugPanel';
 
@@ -41,19 +41,8 @@ const Game = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-
-  /*
-    const [roles, setRoles] = useState([
-      { role_id: 0, name: "Customer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: parseFloat(0.0) },
-      { role_id: 1, name: "Retailer", user_id: user.id, game_id: location.state?.id || 1, inventory: 0, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[0], isHistoryVisible: false, isHidden: rolesHidden, expenses:parseFloat(0.0)  },
-      { role_id: 2, name: "Wholesaler", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[1], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-      { role_id: 3, name: "Distributor", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[2], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-      { role_id: 4, name: "Manufacturer", user_id: user.id, game_id: location.state?.id || 1, inventory: 4, ordered: 0, fulfilled: 0, lastFulfilled: 0, lastOrder: 0, received: 0, totalReceived: 0, pendingReceived: 0, roundsPending: 0, history: history[3], isHistoryVisible: false, isHidden: rolesHidden, expenses: 0.0 },
-    ]);
-    */
-
   // createNewRolesArray gets passed an options obj and an inventories array
-  const [roles, setRoles] = useState(createNewRolesArray({ user_id: user.id, game_id: location.state?.id || 1 }, startInventories));
+  const [roles, setRoles] = useState(createNewRolesArray({ user_id: user.id, game_id: location.state?.id || 1 }, startInventories), defaultBehavior(rounds, 1));
 
   // when loading print state values
   if (isLoading) {
@@ -72,13 +61,14 @@ const Game = () => {
 
   }, [currentPlayerIndex]);
 
+
+  // fulfillment refers to the number of orders the next player can fulfill.
+  // fulfilled is the ammount that will be added to player's inventory when the shipment arrives
   //returns into setRoles
   const checkFulfillment = (idx, players, amount) => {
     // set lastFulfilled to current fulfilled
 
     const player = players[idx];
-
-
     // when the current player is the customer
     if (idx === 0) {
 
@@ -115,12 +105,9 @@ const Game = () => {
       else return entry;
 
     })
-
-
     return newPlayers;
 
   }
-
 
   const handleOrderForNonActiveRoles = (index) => {
     const updatedRoles = roles.map((entry, idx) => {
@@ -138,7 +125,6 @@ const Game = () => {
       }
       return entry;
     });
-    //setRoles(updatedRoles);
 
 
     setTimeout(() => {
