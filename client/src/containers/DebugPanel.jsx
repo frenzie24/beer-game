@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import NumberSelection from './NumberSelection';
+import NumberSelection from '../components/NumberSelection';
 
 const DebugPanel = ({ isLoading, gameOver, rounds, setRounds, onAutoPlay, onRestart, onRevealDetails, onRevealGodMode }) => {
 

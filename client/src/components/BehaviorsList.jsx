@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { defaultBehavior, randomBehavior } from './workers/Behaviors'
-import Behavior from './Behavior';
-import DelayInput from './components/DelayInput';
-import CostsInput from './components/CostsInput';
+import { defaultBehavior, randomBehavior } from '../workers/Behaviors'
+import Behavior from '../views/Behavior';
+import DelayInput from './DelayInput';
+import CostsInput from './CostsInput';
 //increase element legiblity by condensing className
 const liStyle = 'w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 capitalize';
 

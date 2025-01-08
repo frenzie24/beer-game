@@ -1,7 +1,7 @@
 // src/components/LoginForm.js
 
 import React from 'react';
-import InputField from './InputField';
+import InputField from '../components/InputField';
 
 const LoginForm = ({ email, setEmail, password, setPassword, handleSubmit, navigateToRegister }) => {
   return (
