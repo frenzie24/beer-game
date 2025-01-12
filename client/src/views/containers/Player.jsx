@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PlayerRole from './PlayerRole';
 
-const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, handleOrder, toggleHistoryVisibility, name, detailsHidden, godMode }) => {
+const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, handleOrder, toggleHistoryVisibility, name, detailsHidden, godMode, style }) => {
   const [orderAmount, setOrderAmount] = useState(0);
 
   const handleOrderChange = (e) => {
@@ -16,7 +16,7 @@ const Player = ({ player, history, index, currentPlayerIndex, handleNextPlayer, 
 
 
   return (
-    <div className="flex flex-col h-fit items-center border p-2 rounded-lg shadow-md bg-slate-800">
+    <div className={`flex flex-col h-fit w-fit items-center border p-2 rounded-lg shadow-md bg-slate-800 ${style}`}>
 
       <div className='flex flex-row flex-wrap justify-around'>
         <h2 className="text-2xl font-bold mb-4">{name}</h2>
