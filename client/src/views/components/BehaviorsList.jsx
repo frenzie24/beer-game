@@ -3,6 +3,7 @@ import { defaultBehavior, randomBehavior } from '../../controllers/Behaviors'
 import Behavior from '../Behavior';
 import DelayInput from './DelayInput';
 import CostsInput from './CostsInput';
+import { roleBgColors } from '../../controllers/GameController';
 //increase element legiblity by condensing className
 const liStyle = 'w-full bg-slate-900 text-slate-200 rounded-md border-2 border-slate-900 capitalize';
 
@@ -72,7 +73,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
 
     }
     return (
-        <article className='bg-slate-300 p-1 my-2 rounded-lg'>
+        <article className={`${roleBgColors[id]} p-1 my-2 rounded-lg`}>
 
             <label className='text-slate-900 text-lg font-bold capitalize'><span>{name} Behavior {(selected) ? 'current behavior: ' + selected.name : ''}</span>
                 {id != 4 ? <><DelayInput name={name} onChange={handleDelayChange} />

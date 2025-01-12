@@ -7,6 +7,7 @@ import BehaviorsList from './components/BehaviorsList';
 
 import { defaultBehavior } from '../controllers/Behaviors';
 
+
 const GameSettings = ({ }) => {
   // State for the game settings
   const [rounds, setRounds] = useState(10); // Default to 10 rounds
