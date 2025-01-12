@@ -86,7 +86,7 @@ const GameSettings = ({ }) => {
         //   navigate('/login');
       }
     } catch (error) {
-      navigate('/game', { state: { id: 1, user: user, role: Number(role), rounds: rounds, entropy: entropy, players: roles, behaviors: [customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior] } });
+      navigate('/game', { state: { id: 1, user: user, role: Number(role), rounds: rounds, entropy: entropy, players: roles}});
       debugger;
       //setIsLoading(false);
       setErrorMessage('An error occurred. Please try again.');
