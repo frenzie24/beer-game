@@ -331,7 +331,7 @@ const Game = () => {
 
       <Dashboard round={round} name={user.first_name} role={roles[selectedRole]?.name || 'CPU'} roundsRemaining={remainingRounds()} expenses={roles[selectedRole]?.expenses || roles[1].expenses} gameOver={gameOver} />
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-5 flex-wrap gap-8">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 flex-wrap gap-8">
         {!gameOver ? roles.map((role) => {
           const hideDetails = role.role_id == selectedRole ? false : rolesHidden;
           if (role.role_id === selectedRole) {
