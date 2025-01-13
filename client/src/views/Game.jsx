@@ -47,7 +47,7 @@ debugger;
   // when loading print state values
   if (isLoading) {
     debugJSON({ rounds, round, currentPlayerIndex, selectedRole, behaviors, gameOver, user, history, errorMessage, roles });
-  } else ({ message: `game view rerender`, rounds, rounds, round, currentPlayerIndex, selectedRole, roles })
+  } else ({ message: `game view rerender`, rounds,  round, currentPlayerIndex, selectedRole, roles })
 
   // Handles turn changing for npc
   useEffect(() => {
