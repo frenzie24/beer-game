@@ -4,7 +4,7 @@ import Player from './containers/Player';
 import ErrorModal from './components/ErrorModal';
 import Connection from '../controllers/Conncetion';
 import Dashboard from './containers/Dashboard';
-import { defaultBehavior } from '../controllers/Behaviors';
+import { Behavior, defaultBehavior } from '../controllers/Behaviors';
 import { delim, arrayDelim, createNewRolesArray, npcDelay, debugJSON, splitFilterJSON, parseJSONArray, stringifyData2D, randomOrders } from '../controllers/GameController';
 import DebugPanel from './containers/DebugPanel';
 
@@ -33,9 +33,10 @@ const Game = () => {
   const autoRole = location.state?.role || 1;
 
   // get behaviors from passed settings or use default behaviors if undefined
-  debugger;
+
   // behaviors taken from state must be parsed back into [] of objs
-  const [behaviors, setBehaviors] = useState(JSON.parse(location.state?.behaviors) || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
+
+  const [behaviors, setBehaviors] = useState(Behavior.parse(location.state?.behaviors) || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
   debugger;
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
 
@@ -49,7 +50,7 @@ const Game = () => {
   // when loading print state values
   if (isLoading) {
     debugJSON({ rounds, round, currentPlayerIndex, selectedRole, behaviors, gameOver, user, history, errorMessage, roles });
-  } else ({ message: `game view rerender`, rounds,  round, currentPlayerIndex, selectedRole, roles })
+  } else ({ message: `game view rerender`, rounds, round, currentPlayerIndex, selectedRole, roles })
 
   // Handles turn changing for npc
   useEffect(() => {
@@ -352,7 +353,7 @@ const Game = () => {
               />);
 
             } else {
-              if(role.role_id==0) {
+              if (role.role_id == 0) {
                 return (<Player player={role}
                   key={role.role_id}
                   index={role.role_id}
@@ -365,7 +366,7 @@ const Game = () => {
                   detailsHidden={hideDetails}
                   godMode={godMode}
                   style={` col-span-1`}
-                  />
+                />
 
                 )
               }

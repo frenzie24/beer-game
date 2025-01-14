@@ -17,7 +17,7 @@ class Behavior {
         // use passed name param if possible
         this.name = name || 'default'
         // if params has a phases that is an array use it, otherwise create a phases array with default behaviors
-        this.phases = Array.isArray(phases) ? params.phases : [{ rounds: 4, orders: 4 }, { rounds: 10, orders: 8 }]
+        this.phases = Array.isArray(phases) ? phases : [{ rounds: 4, orders: 4 }, { rounds: 10, orders: 8 }]
         //rounds are tracked starting from 0. inits to first phase rounds - 1 for expectyed behavior
         this.currentRoundToPhaseChange = this.phases[0].rounds - 1;
         //delay in weeks, use passed delay if possible
@@ -30,7 +30,7 @@ class Behavior {
     }
 
     // returns the appropriate order value based on the current phase determined by round param
-     getRoundOrder = (round) => {
+    getRoundOrder = (round) => {
         try {
             if (round >= this.currentRoundToPhaseChange) {
                 // ensure we dont iterate into undefined
@@ -55,6 +55,22 @@ class Behavior {
             delay: this.delay,
             arrives: round + this.delay
         }
+    }
+
+
+
+    static parse = (behaviors) => {
+        const fromJSON = (json) => {
+            const { name, phases, delay, cost } = json;
+            return new Behavior(name, phases, delay, cost);
+
+        }
+        const behaviorArr = JSON.parse(behaviors);
+        // if parsed behaviors string is an array, map it otherwise return a new behavior from the json obj parsed
+        const newBehaviors = Array.isArray(behaviorArr) ? behaviorArr.map((behavior) => {
+            return fromJSON(behavior);
+        }) : fromJSON(behaviorArr);
+        return newBehaviors;
     }
 }
 
