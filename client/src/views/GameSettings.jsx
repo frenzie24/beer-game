@@ -182,7 +182,7 @@ const GameSettings = ({ }) => {
         <div className="flex justify-center">
           <button
             onClick={handleStartGame}
-            className=" [&_*]:border-2 [&_*]:border-slate-300 mt-2 [&_*]:p-2 [&_*]:mx-1 [&_*]:rounded-md [&_*]:bg-slate-700"
+            className="my-2 border-2 border-slate-200 bg-slate-950 hover:border-slate-300 hover:bg-slate-500 hover:text-slate-900"
           >
             Start Game
           </button>
