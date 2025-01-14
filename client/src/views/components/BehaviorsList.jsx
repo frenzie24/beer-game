@@ -73,9 +73,9 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
 
     }
     return (
-        <article className={`${roleBgColors[id]} p-1 my-2 rounded-lg`}>
+        <article className={`${roleBgColors[id]} p-2 my-2 rounded-lg`}>
 
-            <label className='text-white text-lg font-bold capitalize p-1'><span>{name} Behavior {(selected) ? 'current behavior: ' + selected.name : ''}</span>
+            <label className='text-white text-lg font-bold capitalize p-1'><span>{name} <p className='pl-4'> {(selected) ? 'current behavior: ' + selected.name : ''}</p></span>
                 {id != 4 ? <>
                    {/* <DelayInput name={name} onChange={handleDelayChange} /> */}
                     <CostsInput name={name} onChange={handleCostsChange} /> </> :

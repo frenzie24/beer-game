@@ -162,7 +162,7 @@ const GameSettings = ({ }) => {
           </div>
 
         </form>
-
+<section className='grid grid-cols-2 gap-4'>
         <BehaviorsList id="0" name="Customers" handleSelection={setCustomerBehavior} />
         {role == 0 ? <></>
           : <BehaviorsList id="1" name="Retailers" handleSelection={setRetailerBehavior} />
@@ -176,7 +176,7 @@ const GameSettings = ({ }) => {
 
         {role == 3 ? <></>
           : <BehaviorsList id="4" name="Manufacturers" handleSelection={setManufacturerBehavior} />}
-
+</section>
         {/* Submit Button */}
 
         <div className="flex justify-center">
