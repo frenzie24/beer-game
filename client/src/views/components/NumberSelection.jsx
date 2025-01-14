@@ -23,10 +23,10 @@ const NumberSelection = ({ name = '', label, min = 0, max = 20, val, setVal, dis
 
     // if a label is not pased, the label portion of the component will not render
     return (<>
-        < div className="[&_*]:bg-slate-100 text-slate-700 font-semibold flex flex-row justify-between items-center flex-wrap ">
+        < div className="h-full bg-slate-100 text-slate-700 font-semibold flex flex-row flex-wrap justify-between items-center  ">
             {label ? <label className='pl-2 w-1/2'>{label}</label> : name ? name : <></>}
             <input
-                className='text-center w-1/2 '
+                className='bg-slate-100 text-center w-1/2 '
                 type="number"
                 value={val}
                 onChange={handleChange}

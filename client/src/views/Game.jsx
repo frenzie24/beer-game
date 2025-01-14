@@ -34,7 +34,7 @@ const Game = () => {
 
   // get behaviors from passed settings or use default behaviors if undefined
   const [behaviors, setBehaviors] = useState(location.state?.behaviors || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
-
+debugger;
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
 
   const [history, setHistory] = useState(location.state?.history ? splitFilterJSON(location.state?.history) : [[], [], [], [], []] || [[], [], [], [], []])
@@ -47,7 +47,7 @@ const Game = () => {
   // when loading print state values
   if (isLoading) {
     debugJSON({ rounds, round, currentPlayerIndex, selectedRole, behaviors, gameOver, user, history, errorMessage, roles });
-  } else ({ message: `game view rerender`, rounds, rounds, round, currentPlayerIndex, selectedRole, roles })
+  } else ({ message: `game view rerender`, rounds,  round, currentPlayerIndex, selectedRole, roles })
 
   // Handles turn changing for npc
   useEffect(() => {
@@ -115,7 +115,7 @@ const Game = () => {
         // call randomOrders()
         const behavior = behaviors[idx];
         const orders = behavior.getRoundOrder(round);
-        const orderAmount =orders;
+        const orderAmount = orders;
 
         entry.ordered = orderAmount;
         //   entry.ordered = randomOrderAmount;
@@ -203,7 +203,7 @@ const Game = () => {
     });
 
     //let _history = stringifyData2D(newHistory);
-    const data = { game: { round, rounds, selectedRole,  history: newHistory.join('|'), id: location.state?.id }, players: updatedRoles, }
+    const data = { game: { round, rounds, selectedRole, history: newHistory.join('|'), id: location.state?.id }, players: updatedRoles, }
 
     // await updateServer({ ...data });
 
@@ -321,68 +321,86 @@ const Game = () => {
   return (
 
 
-    <div className="container mx-auto p-4 text-center">
+    <div className="flex flex-row flex-wrap w-screen h-screen justify-center items-center  text-center">
 
+      <div className='max-w-4xl'>
+        <ErrorModal
+          errorMessage={errorMessage}
+          onClose={() => { setErrorMessage(''); navigate('/login') }}
+        />
 
-      <ErrorModal
-        errorMessage={errorMessage}
-        onClose={() => { setErrorMessage(''); navigate('/login') }}
-      />
+        <Dashboard round={round} name={user.first_name} role={roles[selectedRole]?.name || 'CPU'} roundsRemaining={remainingRounds()} expenses={roles[selectedRole]?.expenses || roles[1].expenses} gameOver={gameOver} />
 
-      <Dashboard round={round} name={user.first_name} role={roles[selectedRole]?.name || 'CPU'} roundsRemaining={remainingRounds()} expenses={roles[selectedRole]?.expenses || roles[1].expenses} gameOver={gameOver} />
+        <div className=" grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 flex-wrap gap-4">
+          {!gameOver ? roles.map((role) => {
+            const hideDetails = role.role_id == selectedRole ? false : rolesHidden;
+            if (role.role_id === selectedRole) {
+              return (<Player player={role}
+                key={role.role_id}
+                index={role.role_id}
+                currentPlayerIndex={currentPlayerIndex}
+                handleNextPlayer={handleNextPlayer}
+                handleOrder={handleOrder}
+                history={history[role.role_id]}
+                toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
+                name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
+                detailsHidden={false}
+                godMode={godMode}
+                style={`col-span-1 lg:col-span-2`}
+              />);
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 flex-wrap gap-8">
-        {!gameOver ? roles.map((role) => {
-          const hideDetails = role.role_id == selectedRole ? false : rolesHidden;
-          if (role.role_id === selectedRole) {
-            return (<Player player={role}
-              key={role.role_id}
-              index={role.role_id}
-              currentPlayerIndex={currentPlayerIndex}
-              handleNextPlayer={handleNextPlayer}
-              handleOrder={handleOrder}
-              history={history[role.role_id]}
-              toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
-              name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
-              detailsHidden={false}
-              godMode={godMode}
-            />);
+            } else {
+              if(role.role_id==0) {
+                return (<Player player={role}
+                  key={role.role_id}
+                  index={role.role_id}
+                  currentPlayerIndex={currentPlayerIndex}
+                  handleNextPlayer={handleNextPlayer}
+                  handleOrder={handleOrder}
+                  history={history[role.role_id]}
+                  toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
+                  name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
+                  detailsHidden={hideDetails}
+                  godMode={godMode}
+                  style={` col-span-1`}
+                  />
 
-          } else {
-            return (<Player player={role}
-              key={role.role_id}
-              index={role.role_id}
-              currentPlayerIndex={currentPlayerIndex}
-              handleNextPlayer={handleNextPlayer}
-              handleOrder={handleOrder}
-              history={history[role.role_id]}
-              toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
-              name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
-              detailsHidden={hideDetails}
-              godMode={godMode} />
+                )
+              }
+              return (<Player player={role}
+                key={role.role_id}
+                index={role.role_id}
+                currentPlayerIndex={currentPlayerIndex}
+                handleNextPlayer={handleNextPlayer}
+                handleOrder={handleOrder}
+                history={history[role.role_id]}
+                toggleHistoryVisibility={(ev) => toggleHistoryVisibility(role.role_id)}
+                name={role.role_id == selectedRole ? user.first_name : `CPU ${role.role_id + 1}`}
+                detailsHidden={hideDetails}
+                godMode={godMode} />
 
-            )
+              )
+            }
+          }) : (
+            roles.map((role) => (
+              <div key={role.role_id} className="mt-4 w-full">
+                <h4 className="text-lg font-semibold">{role.name} Rounds with Pending Shipments: {role.roundsPending}</h4>
+                <h4 className="text-lg font-semibold">{role.name} Total Expenses: {role.expenses}</h4>
+              </div>
+            ))
+          )
           }
-        }) : (
-          roles.map((role) => (
-            <div key={role.role_id} className="mt-4 w-full">
-              <h4 className="text-lg font-semibold">{role.name} Rounds with Pending Shipments: {role.roundsPending}</h4>
-              <h4 className="text-lg font-semibold">{role.name} Total Expenses: {role.expenses}</h4>
-            </div>
-          ))
-        )
-        }
+        </div>
+        {debugMode ?
+          <DebugPanel
+            onAutoPlay={onAutoPlayClick}
+            onRestart={onRestartClick}
+            onRevealDetails={onRevealDetailsClick}
+            onRevealGodMode={onRevealGodModeClick}
+            rounds={rounds}
+            setRounds={setRounds}
+          /> : <></>}
       </div>
-      {debugMode ?
-        <DebugPanel
-          onAutoPlay={onAutoPlayClick}
-          onRestart={onRestartClick}
-          onRevealDetails={onRevealDetailsClick}
-          onRevealGodMode={onRevealGodModeClick}
-          rounds={rounds}
-          setRounds={setRounds}
-        /> : <></>}
-
     </div>
   );
 };

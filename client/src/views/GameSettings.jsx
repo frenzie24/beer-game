@@ -7,6 +7,7 @@ import BehaviorsList from './components/BehaviorsList';
 
 import { defaultBehavior } from '../controllers/Behaviors';
 
+
 const GameSettings = ({ }) => {
   // State for the game settings
   const [rounds, setRounds] = useState(10); // Default to 10 rounds
@@ -43,7 +44,7 @@ const GameSettings = ({ }) => {
   const handleStartGame = async (e) => {
     const data = { game: { round: 0, rounds, selectedRole: role, entropy, history: '' }, players: roles };
     e.preventDefault();
-
+    debugger;
     try {
       // const response = await Connection.newGame(data);
       const response = await fetch('http://localhost:3001/api/games/', {
@@ -85,6 +86,7 @@ const GameSettings = ({ }) => {
         //   navigate('/login');
       }
     } catch (error) {
+      navigate('/game', { state: { id: 1, user: user, role: Number(role), rounds: rounds, entropy: entropy, players: roles}});
       debugger;
       //setIsLoading(false);
       setErrorMessage('An error occurred. Please try again.');
@@ -127,35 +129,35 @@ useEffect(()=> {
 
   return (
     <div className="w-screenp-6 bg-slate-900 shadow-md">
-      <div className='max-w-3xl rounded-md bg-slate-200 shadow-lg mx-auto py-8 px-4'>
+      <div className='max-w-3xl rounded-md bg-slate-500 shadow-lg mx-auto py-8 px-4'>
         <ErrorModal
           errorMessage={errorMessage}
           onClose={() => setErrorMessage('')}
         />
-        <h2 className="text-5xl font-extrabold text-slate-800 text-center">Game Settings</h2>
+        <h2 className="text-5xl font-extrabold text-slate-200 text-center">Game Settings</h2>
 
         <form >
           {/* Rounds Input */}
           <div className="mb-4">
-            <label htmlFor="rounds" className="block text-sm text-black font-semibold">Weeks to Run</label>
+            <label htmlFor="rounds" className="block text-sm text-slate-200 font-bold">Weeks to Run</label>
             <input
               type="number"
               id="rounds"
               value={rounds}
               onChange={handleOnRoundsChange}
               min="1"
-              className="mt-1 px-3 py-2 border rounded-md w-full bg-slate-900"
+              className="mt-1 px-3 py-2 border rounded-md w-full text-slate-900 bg-slate-200"
             />
           </div>
 
           {/* Role Selection Dropdown */}
           <div className="mb-4">
-            <label htmlFor="role" className="block text-sm text-black font-semibold">Select Role:</label>
+            <label htmlFor="role" className="block text-sm text-black font-bold text-slate-200">Select Role:</label>
             <select
               id="role"
               value={role}
               onChange={handleSelectRole}
-              className="mt-1 px-3 py-2 border rounded-md w-full  bg-slate-900"
+              className="mt-1 px-3 py-2 border rounded-md w-full text-slate-900 bg-slate-200"
               disabled={false}
             >
               <option value={0}>Retailers</option>
@@ -167,19 +169,19 @@ useEffect(()=> {
 
         </form>
 
-        <BehaviorsList id="4" name="Customers" handleSelection={setCustomerBehavior} />
+        <BehaviorsList id="0" name="Customers" handleSelection={setCustomerBehavior} />
         {role == 0 ? <></>
-          : <BehaviorsList id="0" name="Retailers" handleSelection={setRetailerBehavior} />
+          : <BehaviorsList id="1" name="Retailers" handleSelection={setRetailerBehavior} />
         }
 
         {role == 1 ? <></>
-          : <BehaviorsList id="1" name="Wholesalers" handleSelection={setWholesalerBehavior} />}
+          : <BehaviorsList id="2" name="Wholesalers" handleSelection={setWholesalerBehavior} />}
 
         {role == 2 ? <></>
-          : <BehaviorsList id="2" name="Distributers" handleSelection={setDistributionerBehavior} />}
+          : <BehaviorsList id="3" name="Distributers" handleSelection={setDistributionerBehavior} />}
 
         {role == 3 ? <></>
-          : <BehaviorsList id="3" name="Manufacturers" handleSelection={setManufacturerBehavior} />}
+          : <BehaviorsList id="4" name="Manufacturers" handleSelection={setManufacturerBehavior} />}
 
         {/* Submit Button */}
 

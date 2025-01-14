@@ -11,7 +11,7 @@ const CostsInput = ({ name, onChange }) => {
     }, [inventory, backLog])
 
     return (
-        <div className='py-1 bg-slate-100 flex flex-col flex-wrap items-apart  text-base'>
+        <div className='rounded-lg flex flex-col flex-wrap items-apart text-base'>
             <NumberSelection
                 label={name + ' Dollar cost per item of inventory'}
                 val={inventory}
