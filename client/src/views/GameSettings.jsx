@@ -122,8 +122,8 @@ const GameSettings = ({ }) => {
   }, [customerBehavior, retailerBehavior, manufacturerBehavior, distributionerBehavior, wholesalerBehavior])
 
   return (
-    <div className="w-screenp-6 bg-slate-900 shadow-md">
-      <div className='max-w-3xl rounded-md bg-slate-500 shadow-lg mx-auto py-8 px-4'>
+    <div className="w-screen p-6 bg-slate-900 shadow-md">
+      <div className='max-w-3xl border-4 border-slate-200 rounded-md bg-slate-900 shadow-lg mx-auto py-8 px-4 my-10'>
         <ErrorModal
           errorMessage={errorMessage}
           onClose={() => setErrorMessage('')}

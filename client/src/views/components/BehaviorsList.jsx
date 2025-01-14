@@ -77,7 +77,7 @@ const BehaviorsList = ({ id = 0, name = '', handleSelection, rounds = 10 }) => {
 
             <label className='text-white text-lg font-bold capitalize p-1'><span>{name} Behavior {(selected) ? 'current behavior: ' + selected.name : ''}</span>
                 {id != 4 ? <>
-                    <DelayInput name={name} onChange={handleDelayChange} />
+                   {/* <DelayInput name={name} onChange={handleDelayChange} /> */}
                     <CostsInput name={name} onChange={handleCostsChange} /> </> :
                     <></>}
                 <ol id={'list' + id}>
