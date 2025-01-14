@@ -33,8 +33,10 @@ const Game = () => {
   const autoRole = location.state?.role || 1;
 
   // get behaviors from passed settings or use default behaviors if undefined
-  const [behaviors, setBehaviors] = useState(location.state?.behaviors || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
-debugger;
+  debugger;
+  // behaviors taken from state must be parsed back into [] of objs
+  const [behaviors, setBehaviors] = useState(JSON.parse(location.state?.behaviors) || [defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1), defaultBehavior(rounds, 1),]);
+  debugger;
   const [user, setUser] = useState(location.state?.user || { first_name: 'Charles', id: 3 });
 
   const [history, setHistory] = useState(location.state?.history ? splitFilterJSON(location.state?.history) : [[], [], [], [], []] || [[], [], [], [], []])

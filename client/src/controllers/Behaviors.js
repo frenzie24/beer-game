@@ -6,12 +6,12 @@ const defaultRounds = 10;
 
 // order 4 units for 4 rounds, then order 8 units per round till the end of the game
 const defaultBehavior = (rounds = 10, delay = 1) => {
-    return new Behavior();
+    return new Behavior('Default', rounds, delay);
 }
 
 // class struct for behavior obj
 class Behavior {
-    constructor( name, phases, delay, cost ) {
+    constructor(name, phases, delay, cost) {
         // index of current phase
         this.currentPhase = 0;
         // use passed name param if possible
@@ -30,18 +30,22 @@ class Behavior {
     }
 
     // returns the appropriate order value based on the current phase determined by round param
-    getRoundOrder = (round) => {
-        if (round >= this.currentRoundToPhaseChange) {
-            // ensure we dont iterate into undefined
-            if (this.currentPhase < this.phases.length - 1) {
-                //add the next phase's rounds value to currentRoundToPhaseChange. Increments currentphase to next index before array access
-                //++variable vs variable++
-                this.currentRoundToPhaseChange += this.phases[++this.currentPhase].rounds;
-                debugger;
+     getRoundOrder = (round) => {
+        try {
+            if (round >= this.currentRoundToPhaseChange) {
+                // ensure we dont iterate into undefined
+                if (this.currentPhase < this.phases.length - 1) {
+                    //add the next phase's rounds value to currentRoundToPhaseChange. Increments currentphase to next index before array access
+                    //++variable vs variable++
+                    this.currentRoundToPhaseChange += this.phases[++this.currentPhase].rounds;
+                    debugger;
+                }
             }
+            // after checking if currentPhase needs to increment, return orders field of the current phase
+            return this.phases[this.currentPhase].orders;
+        } catch (e) {
+            return 'FAIL';
         }
-        // after checking if currentPhase needs to increment, return orders field of the current phase
-        return this.phases[this.currentPhase].orders;
     }
 
     // returns a shipment obj
@@ -86,7 +90,8 @@ const randomBehavior = (rounds) => {
     };
     //this needs to be moved into behavior
     behavior.phases = [behavior.phase1, behavior.phase2, behavior.phase3];
-    return behavior;
+    const newRandomBehavior = new Behavior('Random', behavior.phases, 1, behavior.cost);
+    return newRandomBehavior;
 }
 
 

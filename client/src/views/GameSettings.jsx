@@ -36,7 +36,7 @@ const GameSettings = ({ }) => {
 
   //currently being handled entirely within behavior components by passing associated setBehavior
   const handleBehaviorSubmit = (behavior) => {
-    debugger;
+
     console.log(behavior)
   }
 
@@ -44,7 +44,8 @@ const GameSettings = ({ }) => {
   const handleStartGame = async (e) => {
     const data = { game: { round: 0, rounds, selectedRole: role, entropy, history: '' }, players: roles };
     e.preventDefault();
-    debugger;
+
+    /*
     try {
       // const response = await Connection.newGame(data);
       const response = await fetch('http://localhost:3001/api/games/', {
@@ -56,18 +57,7 @@ const GameSettings = ({ }) => {
         body: JSON.stringify(data),
       });
 
-      debugger;/*
-      if (response.ok) {
-        debugger;
-        const data = await response.json();
-        console.log('GAME CREATED:', data);
-        localStorage.setItem('authToken', data.token); // Store the token
-        return data;
-        //          navigate('/game', { state: { id: data.game.id, user: user, role: Number(role), rounds: rounds, entropy: entropy, players: data.players } });
-        //
 
-        // Redirect to profile page after successful login
-      }*/
       debugger;
       if (response.ok) {
        // debugger;
@@ -86,13 +76,17 @@ const GameSettings = ({ }) => {
         //   navigate('/login');
       }
     } catch (error) {
-      navigate('/game', { state: { id: 1, user: user, role: Number(role), rounds: rounds, entropy: entropy, players: roles}});
-      debugger;
-      //setIsLoading(false);
-      setErrorMessage('An error occurred. Please try again.');
-      //navigate('/login');
-      console.error(error);
-    }
+     */
+    // "serialize" js classes before sending to state, their interal methods cause promise handling errors
+    const behaviors = JSON.stringify([customerBehavior, retailerBehavior, wholesalerBehavior, distributionerBehavior, manufacturerBehavior]);
+    navigate('/game', { state: { id: 1, user: user, role: Number(role), rounds: rounds, entropy: entropy, players: roles, behaviors: behaviors } });
+    debugger;
+    //setIsLoading(false);
+    setErrorMessage('An error occurred. Please try again.');
+    //navigate('/login');
+    console.error(error);
+
+    //}
 
 
 
@@ -122,10 +116,10 @@ const GameSettings = ({ }) => {
     debugger;
   }
 
-useEffect(()=> {
-  console.log(customerBehavior)
-  debugger;
-},[customerBehavior, retailerBehavior, manufacturerBehavior, distributionerBehavior, wholesalerBehavior])
+  useEffect(() => {
+    console.log(customerBehavior)
+
+  }, [customerBehavior, retailerBehavior, manufacturerBehavior, distributionerBehavior, wholesalerBehavior])
 
   return (
     <div className="w-screenp-6 bg-slate-900 shadow-md">
