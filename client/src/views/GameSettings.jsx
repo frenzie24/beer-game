@@ -130,9 +130,9 @@ const GameSettings = ({ }) => {
         />
         <h2 className="text-5xl font-extrabold text-slate-200 text-center">Game Settings</h2>
 
-        <form >
+        <form className='flex flex-row flex-wrap justify-around my-4'>
           {/* Rounds Input */}
-          <div className="mb-4">
+          <div className="w-1/2 pr-2">
             <label htmlFor="rounds" className="block text-sm text-slate-200 font-bold">Weeks to Run</label>
             <input
               type="number"
@@ -145,7 +145,7 @@ const GameSettings = ({ }) => {
           </div>
 
           {/* Role Selection Dropdown */}
-          <div className="mb-4">
+          <div className="w-1/2 pl-2">
             <label htmlFor="role" className="block text-sm text-black font-bold text-slate-200">Select Role:</label>
             <select
               id="role"
